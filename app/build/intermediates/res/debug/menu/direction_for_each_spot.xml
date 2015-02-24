@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.apppreview.tourismguiderofbangladesh.DirectionForEachSpot">
+
+    <item
+        android:id="@+id/showDirectionInfo"
+        app:showAsAction="never|withText"
+        android:title="@string/showDirectionInfo"
+        android:orderInCategory="1"
+        />
+
+</menu><!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/menu/direction_for_each_spot.xml -->

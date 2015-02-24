@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tourism BD</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="nav_drawer_categories">
+        <item>Home</item>
+        <item>Favourites</item>
+        <item>Maps</item>
+        <item>Documentry Videos</item>
+        <item>Heritage Site</item>
+        <item>Beaches</item>
+        <item>Hill stations</item>
+        <item>Island</item>
+        <item>Wildlife</item>
+        <item>Waterfall</item>
+        <item>Archaeological Sites</item>
+        <item>Architecture</item>
+        <item>Religious</item>
+        <item>National Monuments</item>
+        <item>About</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="txt_tourism_in_bangladesh">Tourism in Bangladesh</string>
+    <string name="txt_intro">Bangladesh as a vacation land has many facets. Her tourist attractions include archaeological sites, historic mosques and monuments, resorts, beaches, picnic spots, forest and wildlife. Bangladesh offers opportunities for angling, water-skiing, river cruising, hiking, rowing, surfing, yachting and sea bathing as well as bringing one in close touch with Mother Nature.  She is also rich in wildlife and game birds.</string>
+    <string name="txt_discrip">Tourism in Bangladesh is a developing foreign currency earner. The country was listed by Lonely Planet in 2011 as the "best value destination</string>
+    <string name="txt_discrip1">Bangladesh is a land of scenic beauty. The country is blessed with natural beauty which attracts the tourists. It has beautiful beaches as well as the longest beach in the world. It is proud of its beautiful heritage and historical relics. To make best use of the natural gift, the country has developed facilities of modern hotels, motels, rest houses, youth inns and restaurants</string>
+    <string name="btn_ban_tourism_board">Bangladesh Tourism Board</string>
+    <string name="btn_visit_ban">Visit Bangladesh</string>
+    <string name="btn_porjaton_corp">Porjoton Corporation</string>
+    <string name="btn_map">Show Map</string>
+    <string name="btn_direction">Show Direction</string>
+    <string name="label_discription">Spot Details</string>
+    <string name="label_famous_things">Famous Things</string>
+    <string name="label_location">Spot Location</string>
+    <string name="label_hotels">Hotels/Restaurants</string>
+    <string name="title_activity_spot">SpotActivity</string>
+    <string name="title_documentry_video_activity">Documentry Videos</string>
+
+    <string-array name="all_spots_name">
+        <item>Ahsan Manzil</item>
+        <item>Armenian Church</item>
+        <item>Bandarban</item>
+        <item>Bangabandhu Sheikh Mujib Safari Park</item>
+        <item>Bara Katra</item>
+        <item>Bhawal National Park</item>
+        <item>Bhola Island</item>
+        <item>Buddha Dhatu Jadi</item>
+        <item>Cox\'s Bazar</item>
+        <item>Curzon Hall</item>
+        <item>Hatiya</item>
+        <item>Hum Hum</item>
+        <item>Jadipai waterfall</item>
+        <item>Jaflong</item>
+        <item>Jagaddala Mahavihara</item>
+        <item>Jatiyo Sangshad Bhaban</item>
+        <item>Jatiyo Smriti Soudho</item>
+        <item>Kantajew Temple</item>
+        <item>Khagrachari</item>
+        <item>Kuakata</item>
+        <item>Kutubdia</item>
+        <item>Lalbhag Fort</item>
+        <item>Lawachara National Park</item>
+        <item>Madhabkunda</item>
+        <item>Mahasthangarh</item>
+        <item>Mainamati</item>
+        <item>Manpura Island</item>
+        <item>Mosque City of Bagerhat</item>
+        <item>Nafa-khum</item>
+        <item>Nijhum Dwip</item>
+        <item>Northbrook Hall</item>
+        <item>Patenga</item>
+        <item>Rangamati</item>
+        <item>Sandwip</item>
+        <item>Shaheed Minar</item>
+        <item>Histroic Shat Gumbuj Mosque</item>
+        <item>Somapura Mahavihara</item>
+        <item>Sonadia Island</item>
+        <item>Sonargaon</item>
+        <item>Srimangal</item>
+        <item>St. Martin\'s Island</item>
+        <item>The Sundarbans</item>
+        <item>Wari-Bateshwar</item>
+        <item>Nilachal</item>
+        <item>Nilgiri</item>
+    </string-array>
+
+    <string name="title_activity_google_map_for_each_spot">GoogleMapForEachSpot</string>
+    <string name="title_activity_direction_for_each_spot">DirectionForEachSpot</string>
+
+    <string-array name="ic_of_all_spots">
+        <item>@drawable/ic_ahsan_manzil</item>
+        <item>@drawable/ic_armenian_church</item>
+        <item>@drawable/ic_bandarban</item>
+        <item>@drawable/ic_bangabandhu_sheikh_mujib_safari_park</item>
+        <item>@drawable/ic_bara_katra</item>
+        <item>@drawable/ic_bhawal_national_park</item>
+        <item>@drawable/ic_bhola</item>
+        <item>@drawable/ic_buddha_dhatu_jadi</item>
+        <item>@drawable/ic_coxs_bazar</item>
+        <item>@drawable/ic_curzon_hall</item>
+        <item>@drawable/ic_hatiya</item>
+        <item>@drawable/ic_hum_hum</item>
+        <item>@drawable/ic_jadipai</item>
+        <item>@drawable/ic_jaflong</item>
+        <item>@drawable/ic_jagaddala_mahavihara</item>
+        <item>@drawable/ic_jatiyo_sangshad_bhaban</item>
+        <item>@drawable/ic_jatiyo_smriti_soudho</item>
+        <item>@drawable/ic_kantajew_temple</item>
+        <item>@drawable/ic_khagrachari</item>
+        <item>@drawable/ic_kuakata</item>
+        <item>@drawable/ic_kutubdia</item>
+        <item>@drawable/ic_lalbagh_fort</item>
+        <item>@drawable/ic_lawachara_national_park</item>
+        <item>@drawable/ic_madhabkunda</item>
+        <item>@drawable/ic_mahasthangarh</item>
+        <item>@drawable/ic_mainamati</item>
+        <item>@drawable/ic_monpura_island</item>
+        <item>@drawable/ic_mosque_city_of_bagerhat</item>
+        <item>@drawable/ic_nafa_khum</item>
+        <item>@drawable/ic_nijhum_dwip</item>
+        <item>@drawable/ic_northbrook_hall</item>
+        <item>@drawable/ic_patenga</item>
+        <item>@drawable/ic_rangamati</item>
+        <item>@drawable/ic_sandwip</item>
+        <item>@drawable/ic_shaheed_minar</item>
+        <item>@drawable/ic_shatgumbuj_mosque</item>
+        <item>@drawable/ic_somapura_mahavihara</item>
+        <item>@drawable/ic_sonadia_island</item>
+        <item>@drawable/ic_sonargaon</item>
+        <item>@drawable/ic_srimangal</item>
+        <item>@drawable/ic_st_martin_island</item>
+        <item>@drawable/ic_the_sundarbans</item>
+        <item>@drawable/ic_wari_bateshwar</item>
+        <item>@drawable/ic_nilachal</item>
+        <item>@drawable/ic_nilgiri</item>
+    </string-array>
+
+    <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="add_Favourites">Add to favourites</string>
+    <string name="google_play_services_API_KEY">AIzaSyCPfhfj4u-q4BhjinlROw9uNS7wX7X2Hsc</string>
+    <string name="label_tourism_discrip_in_BD">Tourism In Bangladesh</string>
+    <string name="txt_tourism_discrip_in_BD">Tourism is one of the most promising sector in Bangladesh. Every year a lot of people from home and abroad visit our attracting tourist spots.If we can make the best use this sector, we can earn a huge amount of remittance.  </string>
+    <string name="txt_app_def_1">In this app we are trying to assemble discription, location, historical background, famous things, nearest hotels and useful website links of all possible tourist places of Bangladesh.</string>
+    <string name="label_about_our_app">About Our App</string>
+    <string name="txt_app_def_2">Our app is classified every tourist spot according to public interest</string>
+    <string name="txt_app_def_3">Every tourist spots are marked on the google map that helps you to easily locate tourist spot geographic position</string>
+    <string name="txt_app_def_4">This app helps you to know the distance and the time to reach to any particular tourist spot from your current location.</string>
+    <string name="txt_app_def_5">Documentry videos are linked up this app to know more about tourist spot</string>
+    <string name="txt_web_info">To Know more, visit these website</string>
+
+    <string-array name="historic_shat_gumbuj_mosque">
+        <item>@drawable/image_shatgumbujmosque</item>
+        <item>@drawable/image_2_shatgumbujmosque</item>
+        <item>@drawable/image_3_shat_gumbuj_mosque</item>
+    </string-array>
+    <string-array name="somapura_mahavihara">
+        <item>@drawable/image_somapuramahavihara</item>
+        <item>@drawable/image_2_somapuramahavihara</item>
+        <item>@drawable/image_3_somapuramahavihara</item>
+    </string-array>
+    <string-array name="the_sundarbans">
+        <item>@drawable/image_the_sundarbans</item>
+        <item>@drawable/image_2_the_sundarbans</item>
+        <item>@drawable/image_3_the_sundarbans</item>
+    </string-array>
+    <string-array name="coxs_bazar">
+        <item>@drawable/image_coxs_bazar</item>
+        <item>@drawable/image_2_coxs_bazar</item>
+        <item>@drawable/image_3_coxs_bazar</item>
+    </string-array>
+    <string-array name="kuakata">
+        <item>@drawable/image_kuakata</item>
+        <item>@drawable/image_2_kuakata</item>
+        <item>@drawable/image_3_kuakata</item>
+    </string-array>
+    <string-array name="st_martins_island">
+        <item>@drawable/image_st_martin_island</item>
+        <item>@drawable/image_2_st_martin_island</item>
+        <item>@drawable/image_3_st_martin_island</item>
+    </string-array>
+    <string-array name="patenga">
+        <item>@drawable/image_patenga</item>
+        <item>@drawable/image_2_patenga</item>
+        <item>@drawable/image_3_patenga</item>
+    </string-array>
+    <string-array name="nijhum_dwip">
+        <item>@drawable/image_nijhum_dwip</item>
+        <item>@drawable/image_2_nijhum_dwip</item>
+        <item>@drawable/image_3_nijhum_dwip</item>
+    </string-array>
+    <string-array name="bandarban">
+        <item>@drawable/image_bandarban</item>
+        <item>@drawable/image_2_bandarban</item>
+        <item>@drawable/image_3_bandarban</item>
+    </string-array>
+    <string-array name="khagrachari">
+        <item>@drawable/image_khagrachari</item>
+        <item>@drawable/image_2_khagrachari</item>
+        <item>@drawable/image_3_khagrachari</item>
+    </string-array>
+    <string-array name="rangamati">
+        <item>@drawable/image_rangamati</item>
+        <item>@drawable/image_2_rangamati</item>
+        <item>@drawable/image_3_rangamati</item>
+    </string-array>
+    <string-array name="jaflong">
+        <item>@drawable/image_jaflong</item>
+        <item>@drawable/image_2_jaflong</item>
+        <item>@drawable/image_3_jaflong</item>
+    </string-array>
+    <string-array name="srimangal">
+        <item>@drawable/image_srimangal</item>
+        <item>@drawable/image_2_srimangal</item>
+        <item>@drawable/image_3_srimangal</item>
+    </string-array>
+    <string-array name="nilachal">
+        <item>@drawable/image_nilachal</item>
+        <item>@drawable/image_2_nilachal</item>
+        <item>@drawable/image_3_nilachal</item>
+    </string-array>
+    <string-array name="nilgiri">
+        <item>@drawable/image_nilgiri</item>
+        <item>@drawable/image_2_nilgiri</item>
+        <item>@drawable/image_3_nilgiri</item>
+    </string-array>
+    <string-array name="bhola_island">
+        <item>@drawable/image_bhola</item>
+        <item>@drawable/image_2_bhola</item>
+        <item>@drawable/image_3_bhola</item>
+    </string-array>
+    <string-array name="hatiya">
+        <item>@drawable/image_hatiya</item>
+        <item>@drawable/image_2_hatiya</item>
+        <item>@drawable/image_3_hatiya</item>
+    </string-array>
+    <string-array name="kutubdia">
+        <item>@drawable/image_kutubdia</item>
+        <item>@drawable/image_2_kutubdia</item>
+        <item>@drawable/image_3_kutubdia</item>
+    </string-array>
+    <string-array name="manpura_island">
+        <item>@drawable/image_monpura</item>
+        <item>@drawable/image_2_manpura_island</item>
+        <item>@drawable/image_3_manpura_island</item>
+    </string-array>
+    <string-array name="sandwip">
+        <item>@drawable/image_sandwip</item>
+        <item>@drawable/image_2_sandwip</item>
+        <item>@drawable/image_3_sandwip</item>
+    </string-array>
+    <string-array name="sonadia_island">
+        <item>@drawable/image_sonadia_island</item>
+        <item>@drawable/image_2_sonadia_island</item>
+        <item>@drawable/image_3_sonadia_island</item>
+    </string-array>
+    <string-array name="bhawal_national_park">
+        <item>@drawable/image_bhawal_national_park</item>
+        <item>@drawable/image_2_bhawal_national_park</item>
+        <item>@drawable/image_3_bhawal_national_park</item>
+    </string-array>
+    <string-array name="lawachara_national_park">
+        <item>@drawable/image_lawachara_national_park</item>
+        <item>@drawable/image_2_lawachara_national_park</item>
+        <item>@drawable/image_3_lawachara_national_park</item>
+    </string-array>
+    <string-array name="bangabandhu_sheikh_mujib_safari_park">
+        <item>@drawable/image_bangabandhu_sheikh_mujib_safari_park</item>
+        <item>@drawable/image_2_bangabandhu_sheikh_mujib_safari_park</item>
+        <item>@drawable/image_3_bangabandhu_sheikh_mujib_safari_park</item>
+    </string-array>
+    <string-array name="hum_hum">
+        <item>@drawable/image_hum_hum</item>
+        <item>@drawable/image_2_hum_hum</item>
+        <item>@drawable/image_3_hum_hum</item>
+    </string-array>
+    <string-array name="madhabkunda">
+        <item>@drawable/image_madhabkunda</item>
+        <item>@drawable/image_2_madhabkunda</item>
+        <item>@drawable/image_3_madhabkunda</item>
+    </string-array>
+    <string-array name="nafa_khum">
+        <item>@drawable/image_nafa_khum</item>
+        <item>@drawable/image_2_nafa_khum</item>
+        <item>@drawable/image_3_nafa_khum</item>
+    </string-array>
+    <string-array name="jadipai_waterfall">
+        <item>@drawable/image_jadipai</item>
+        <item>@drawable/image_2_jadipai_waterfall</item>
+        <item>@drawable/image_3_jadipai_waterfall</item>
+    </string-array>
+    <string-array name="jagaddala_mahavihara">
+        <item>@drawable/image_jagaddala_mahavihara</item>
+        <item>@drawable/image_2_jagaddala_mahavihara</item>
+        <item>@drawable/image_3_jagaddala_mahavihara</item>
+    </string-array>
+    <string-array name="mahasthangarh">
+        <item>@drawable/image_mahasthangarh</item>
+        <item>@drawable/image_2_mahasthangarh</item>
+        <item>@drawable/image_3_mahasthangarh</item>
+    </string-array>
+    <string-array name="mainamati">
+        <item>@drawable/image_mainamati</item>
+        <item>@drawable/image_2_mainamati</item>
+        <item>@drawable/image_3_mainamati</item>
+    </string-array>
+    <string-array name="mosque_city_of_bagerhat">
+        <item>@drawable/image_mosque_city_of_bagerhat</item>
+        <item>@drawable/image_2_mosque_city_of_bagerhat</item>
+        <item>@drawable/image_3_mosque_city_of_bagerhat</item>
+    </string-array>
+    <string-array name="sonargaon">
+        <item>@drawable/image_sonargaon</item>
+        <item>@drawable/image_2_sonargaon</item>
+        <item>@drawable/image_3_sonargaon</item>
+    </string-array>
+    <string-array name="wari_bateshwar">
+        <item>@drawable/image_wari_bateshwar</item>
+        <item>@drawable/image_2_wari_bateshwar</item>
+        <item>@drawable/image_3_wari_bateshwar</item>
+    </string-array>
+    <string-array name="ahsan_manzil">
+        <item>@drawable/image_ahsan_manzil</item>
+        <item>@drawable/image_2_ahsan_manzil</item>
+        <item>@drawable/image_3_ahsan_manzil</item>
+    </string-array>
+    <string-array name="bara_katra">
+        <item>@drawable/image_bara_katra</item>
+        <item>@drawable/image_2_bara_katra</item>
+        <item>@drawable/image_3_bara_katra</item>
+    </string-array>
+    <string-array name="curzon_hall">
+        <item>@drawable/image_curzon_hall</item>
+        <item>@drawable/image_2_curzon_hall</item>
+        <item>@drawable/image_3_curzon_hall</item>
+    </string-array>
+    <string-array name="jatiyo_sangshad_bhaban">
+        <item>@drawable/image_jatiyo_sangshad_bhaban</item>
+        <item>@drawable/image_2_jatiyo_sangshad_bhaban</item>
+        <item>@drawable/image_3_jatiyo_sangshad_bhaban</item>
+    </string-array>
+    <string-array name="lalbhag_fort">
+        <item>@drawable/image_lalbagh_fort</item>
+        <item>@drawable/image_2_lalbhag_fort</item>
+        <item>@drawable/image_3_lalbhag_fort</item>
+    </string-array>
+    <string-array name="northbrook_hall">
+        <item>@drawable/image_northbrook_hall</item>
+        <item>@drawable/image_2_northbrook_hall</item>
+        <item>@drawable/image_3_northbrook_hall</item>
+    </string-array>
+    <string-array name="kantajew_temple">
+        <item>@drawable/image_kantajew_temple</item>
+        <item>@drawable/image_2_kantajew_temple</item>
+        <item>@drawable/image_3_kantajew_temple</item>
+    </string-array>
+    <string-array name="buddha_dhatu_jadi">
+        <item>@drawable/image_buddha_dhatu_jadi</item>
+        <item>@drawable/image_2_buddha_dhatu_jadi</item>
+        <item>@drawable/image_3_buddha_dhatu_jadi</item>
+    </string-array>
+    <string-array name="armenian_church">
+        <item>@drawable/image_armenian_church</item>
+        <item>@drawable/image_2_armenian_chruch</item>
+        <item>@drawable/image_3_armenian_chruch</item>
+    </string-array>
+    <string-array name="jatiyo_smriti_soudho">
+        <item>@drawable/image_jatiyo_smriti_soudho</item>
+        <item>@drawable/image_2_jatiyo_smriti_soudho</item>
+        <item>@drawable/image_3_jatiyo_smriti_soudho</item>
+    </string-array>
+    <string-array name="shaheed_minar">
+        <item>@drawable/image_shaheed_minar</item>
+        <item>@drawable/image_2_shaheed_minar</item>
+        <item>@drawable/image_3_shaheed_minar</item>
+    </string-array>
+
+    <string name="btn_remove_spot_yes">yes</string>
+    <string name="btn_remove_spot_no">no</string>
+    <string name="showDirectionInfo">Show Direction Info</string>
+
+
+    <string name="title_activity_google_map_direction">GoogleMapDirectionActivity</string>
+    <string name="title_activity_youtube_documentry_video">YoutubeDocumentryVideoActivity</string>
+    <string name="title_activity_tourist_spot_info">TouristSpotInfoActivity</string>
+
+</resources>

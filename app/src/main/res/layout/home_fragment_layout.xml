@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txt_tourism_guider_of_bangladesh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/deepgray"
+            android:gravity="center|start"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="@string/txt_tourism_in_bangladesh"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/darkblue2"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/txt_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/txt_intro"
+            android:textColor="@color/lightgreen2"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/home_image_view_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/home_image_1" />
+
+        <TextView
+            android:id="@+id/txt_discrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/txt_discrip"
+            android:textColor="@color/lightgreen2"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/home_image_view_2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/home_image_2" />
+
+        <TextView
+            android:id="@+id/txt_discrip1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/txt_discrip1"
+            android:textColor="@color/lightgreen2"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/home_image_view_3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/home_image_3" />
+
+        <TextView
+            android:id="@+id/txt_web_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/txt_web_info"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/btn_tourism_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/lightorange"
+            android:gravity="center"
+            android:text="@string/btn_ban_tourism_board"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_visit_ban"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/lightorange"
+            android:gravity="center"
+            android:text="@string/btn_visit_ban"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_parjaton_corp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/lightorange"
+            android:gravity="center"
+            android:text="@string/btn_porjaton_corp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</ScrollView>
