@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.apppreview.tourismguiderofbangladesh.app.SpotActivity">
+
+    <item
+        android:id="@+id/add_favourites"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        android:title="@string/add_Favourites"
+        android:icon="@drawable/ic_action_favorite_dark" />
+
+</menu>

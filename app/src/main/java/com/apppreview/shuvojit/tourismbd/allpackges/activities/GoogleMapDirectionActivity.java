@@ -2,13 +2,8 @@ package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,19 +12,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DirectionApiJsonClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapInterface;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.Intializer;
-import com.apppreview.shuvojit.tourismbd.allpackges.webServices.GoogleMapDirectionJsonParser;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
+import com.apppreview.shuvojit.tourismbd.allpackges.locationsServices.UserLocation;
+import com.apppreview.shuvojit.tourismbd.allpackges.webServices.GoogleMapDirectionJsonAPIWebService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -39,81 +36,42 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GoogleMapDirectionActivity extends ActionBarActivity implements
-        LocationListener, GoogleMapInterface, Intializer {
+        GoogleMapInterface, InitializerClient {
 
     private GoogleMap googleMap;
     private MapFragment mapFragment;
-    private LocationManager locationManager;
-    private Location userLocation;
-    private double userLatitudeVal, userLongitudeVal;
     private Intent intent;
     private LatLongInfo latlongInfo;
-    private LatLng fromLatLong, toLatLong;
-    private MarkerOptions userMarkerOptions;
-    private MarkerOptions spotMarkeroptions;
     private String durationText, distanceText, startAddress, endAddress,
-            copyRight, durationValue, distanceValue;
-    private ArrayList<LatLng> latLongList;
-    private ProgressDialog progressDialog;
-    private String jsonData;
+            copyRight;
     private Timer timer;
     private Handler handler;
     private TimerTask timerTask;
-    private Marker userMarker;
     private ActionBar actionBar;
-    private OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
+    private UserLocation userLocation;
+    private Marker userMarker;
+    private double userLatitudeVal;
+    private double userLongitudeVal;
 
-        @Override
-        public void onInfoWindowClick(Marker marker) {
-            if (marker.getTitle().equals(latlongInfo.getSpotName())) {
-                Toast.makeText(getApplicationContext(),
-                        marker.getTitle() + "\n" + marker.getSnippet(),
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.google_map_layout);
-        intialize();
-        getOverFlowMenu();
+        initialize();
+        //getOverFlowMenu();
         googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(this));
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.darkred)));
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
     }
 
-    @Override
-    public void intialize() {
-        actionBar = getSupportActionBar();
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(
-                R.id.googleMap);
-        googleMap = this.mapFragment.getMap();
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        intent = getIntent();
-        latlongInfo = (LatLongInfo) this.intent
-                .getSerializableExtra("SpotLatLongInfo");
-        progressDialog = new ProgressDialog(this);
-        jsonData = null;
-        handler = new Handler();
-        timer = new Timer();
-        userMarker = null;
-        setGoogleMapCameraMove();
-        setUpSpotLocation();
-        setTitle(latlongInfo.getSpotName());
-
-    }
-
-    private void getOverFlowMenu() {
+    /*private void getOverFlowMenu() {
         try {
             ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class
@@ -126,14 +84,63 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
             e.printStackTrace();
         }
 
+    }*/
+
+    @Override
+    public void initialize() {
+        actionBar = getSupportActionBar();
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(
+                R.id.googleMap);
+        googleMap = this.mapFragment.getMap();
+        intent = getIntent();
+        latlongInfo = (LatLongInfo) this.intent
+                .getSerializableExtra("SpotLatLongInfo");
+        MarkerOptions spotMarkerOptions = new MarkerOptions()
+                .position(new LatLng(latlongInfo.getLatitudeVal(), latlongInfo.getLongtitudeVal()))
+                .draggable(false)
+                .title(latlongInfo.getSpotName())
+                .snippet(latlongInfo.getSpotSnippet())
+                .visible(true);
+        Marker marker = googleMap.addMarker(spotMarkerOptions);
+        setMarkerIcons(marker, latlongInfo.getSpotType());
+        handler = new Handler();
+        timer = new Timer();
+        setGoogleMapCameraMove();
+        setTitle(latlongInfo.getSpotName());
+        UiSettings uiSettings = googleMap.getUiSettings();
+        uiSettings.setMapToolbarEnabled(false);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpUserLocationProvider();
-        setUpUserLocation();
-        setUpDirection();
+        userLocation = UserLocation.getUserLocation(GoogleMapDirectionActivity.this);
+        userLocation.setUpUserLocation();
+        userLatitudeVal = userLocation.getUserLatitude();
+        userLongitudeVal = userLocation.getUserLongtitude();
+        if (userMarker == null) {
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(new LatLng(userLatitudeVal, userLongitudeVal))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user))
+                    .title("You are here");
+            userMarker = googleMap.addMarker(markerOptions);
+        } else {
+            changeUserPosition();
+        }
+        new GoogleMapDirectionApiAsyncTask().execute();
+        setTimer();
+    }
+
+
+    private void changeUserPosition() {
+        userLatitudeVal = userLocation.getUserLatitude();
+        userLongitudeVal = userLocation.getUserLongtitude();
+        LatLng markerLatLng = userMarker.getPosition();
+        if (userLatitudeVal != markerLatLng.latitude ||
+                userLongitudeVal != markerLatLng.longitude) {
+            userMarker.setPosition(new LatLng(userLatitudeVal, userLongitudeVal));
+        }
     }
 
     @Override
@@ -145,19 +152,19 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         switch (id) {
             case android.R.id.home:
                 stopTimer();
                 finish();
                 break;
             case R.id.showDirectionInfo:
-                showToastMessageOfDirectionInfo();
+                showToastMessage();
+                break;
+            case R.id.reloadDirection:
+                reloadDirection();
                 break;
         }
-
         return true;
     }
 
@@ -167,24 +174,6 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Bangladesh,
                     6.0f));
         }
-    }
-
-    private void setUpDirection() {
-        new DirectionAsyncTask().execute();
-        userMarkerOptions = new MarkerOptions()
-                .position(fromLatLong)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.marker_user))
-                .title("You are here");
-        userMarker = googleMap.addMarker(userMarkerOptions);
-        spotMarkeroptions = new MarkerOptions().position(toLatLong)
-                .title(latlongInfo.getSpotName())
-                .snippet(latlongInfo.getSpotSnippet());
-        Marker spotmarker = googleMap.addMarker(spotMarkeroptions);
-        setMarkerIcons(spotmarker, latlongInfo.getSpotType());
-        setTimer();
-        googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
-
     }
 
     private void setTimer() {
@@ -198,16 +187,23 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
                         @Override
                         public void run() {
 
-                            showToastMessageOfDirectionInfo();
+                            reloadDirection();
+                            Log.e(getClass().getName()," timer task is running");
                         }
                     });
                 }
             };
-            timer.scheduleAtFixedRate(timerTask, 60000, 60000);
+            timer.scheduleAtFixedRate(timerTask, 300000, 300000);
 
         }
 
     }
+
+   private void reloadDirection()
+   {
+       changeUserPosition();
+       new GoogleMapDirectionApiAsyncTask().execute();
+   }
 
     private void stopTimer() {
         if (timer != null && handler != null && timerTask != null) {
@@ -219,148 +215,30 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         }
     }
 
-    private void showToastMessageOfDirectionInfo() {
-        if (durationText != null && distanceText != null
-                && startAddress != null && endAddress != null
-                && copyRight != null) {
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Duration: " + durationText + "\n" + "Distance: "
-                            + distanceText + "\n" + "Present Address: "
-                            + startAddress + "\n" + "Destination Address: "
-                            + endAddress + "\n" + copyRight, Toast.LENGTH_LONG)
-                    .show();
+
+    private void showToastMessage() {
+        if (durationText != null && distanceText != null && startAddress != null &&
+                endAddress != null && copyRight != null) {
+            String distanceIndicator = "Distance:";
+            String durationIndicator = "Duration:";
+            String startAddressIndicator = "Present Location:";
+            String endAddressIndicator = "Destination Location:";
+            String message = distanceIndicator + " " + distanceText + "\n" + durationIndicator +
+                    " " + durationText + "\n" + startAddressIndicator + " " + startAddress + "\n"
+                    + endAddressIndicator + " " + endAddress + "\n" + copyRight;
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+
         } else {
-            Toast.makeText(getApplicationContext(), "Sry no direction found",
+            Toast.makeText(getApplicationContext(), "Sorry we could not connect to web services" +
+                            "right now. Please check your internet connection.",
                     Toast.LENGTH_LONG).show();
+
         }
+        Log.e(getClass().getName(), "Message is showing");
 
     }
 
-    private void setUpSpotLocation() {
-        toLatLong = new LatLng(latlongInfo.getLatitudeVal(),
-                latlongInfo.getLongtitudeVal());
-    }
-
-    private void setUpUserLocation() {
-        fromLatLong = new LatLng(getUserLatitudeVal(), getUserLongitudeVal());
-    }
-
-    private boolean isServiceEnabled(String provider) {
-        if (locationManager.isProviderEnabled(provider)) {
-            return true;
-        }
-        return false;
-    }
-
-    private void setUpUserLocationProvider() {
-        Location gpsLocation = null;
-        Location networkLocation = null;
-        gpsLocation = requestUpdateFromprovider(LocationManager.GPS_PROVIDER);
-        networkLocation = requestUpdateFromprovider(LocationManager.NETWORK_PROVIDER);
-        if (gpsLocation != null && networkLocation != null) {
-            userLocation = bestLocationProvider(gpsLocation, networkLocation);
-            setUserLatitudeVal(userLocation.getLatitude());
-            setUserLongitudeVal(userLocation.getLongitude());
-
-        } else if (gpsLocation != null) {
-            userLocation = gpsLocation;
-            setUserLatitudeVal(userLocation.getLatitude());
-            setUserLongitudeVal(userLocation.getLongitude());
-        } else if (networkLocation != null) {
-            userLocation = networkLocation;
-            setUserLatitudeVal(userLocation.getLatitude());
-            setUserLongitudeVal(userLocation.getLongitude());
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "No Location provider is enabled", Toast.LENGTH_LONG)
-                    .show();
-        }
-
-    }
-
-    private Location requestUpdateFromprovider(String provider) {
-        Location location = null;
-        if (isServiceEnabled(provider)) {
-            locationManager.requestLocationUpdates(provider, 1000, 10, this);
-            location = locationManager.getLastKnownLocation(provider);
-        }
-        return location;
-    }
-
-    private Location bestLocationProvider(Location newLocation,
-                                          Location oldLocation) {
-        if (oldLocation == null) {
-            return newLocation;
-        }
-
-        long timeDelta = newLocation.getTime() - oldLocation.getTime();
-        boolean isSignificantlyNewer = timeDelta > 60000;
-        boolean isSignificantlyOlder = timeDelta < -60000;
-        boolean isNewer = timeDelta > 0;
-        if (isSignificantlyNewer) {
-            return newLocation;
-        } else if (isSignificantlyOlder) {
-            return oldLocation;
-        }
-
-        int deltaAccuracy = (int) (newLocation.getAccuracy() - oldLocation
-                .getAccuracy());
-        boolean isMoreAccurate = deltaAccuracy < 0;
-        boolean islessAccurate = deltaAccuracy > 0;
-        boolean isSignificantlyLessAccurate = deltaAccuracy > 200;
-
-        if (isMoreAccurate) {
-            return newLocation;
-        } else if (isNewer && !islessAccurate) {
-            return newLocation;
-        } else if (isNewer && !isSignificantlyLessAccurate) {
-            return newLocation;
-        }
-        return oldLocation;
-
-    }
-
-    private double getUserLatitudeVal() {
-        return userLatitudeVal;
-    }
-
-    private void setUserLatitudeVal(double userLatitudeVal) {
-        this.userLatitudeVal = userLatitudeVal;
-    }
-
-    private double getUserLongitudeVal() {
-        return userLongitudeVal;
-    }
-
-    private void setUserLongitudeVal(double userLongitudeVal) {
-        this.userLongitudeVal = userLongitudeVal;
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        userLocation = location;
-        setUserLatitudeVal(userLocation.getLatitude());
-        setUserLongitudeVal(userLocation.getLongitude());
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Toast.makeText(getApplicationContext(), provider + " is enabled",
-                Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(getApplicationContext(), provider + " is not enabled",
-                Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void setMarkerIcons(Marker marker, String spotType) {
@@ -432,9 +310,31 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
     }
 
-    private class DirectionAsyncTask extends AsyncTask<Void, Void, Boolean> {
+    private OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
 
-        public DirectionAsyncTask() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            if (marker.getTitle().equals(latlongInfo.getSpotName())) {
+                Toast.makeText(getApplicationContext(),
+                        marker.getTitle() + "\n" + marker.getSnippet(),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    private class GoogleMapDirectionApiAsyncTask extends AsyncTask<Void, Void, Boolean>
+            implements DirectionApiJsonClient {
+
+        private ProgressDialog progressDialog;
+        private String jsonData;
+        private String userLatitude;
+        private String userLongitude;
+        private String touristSpotLatitude;
+        private String touristSpotLongitude;
+        private ArrayList<LatLng> directionPointslatLng;
+
+
+        public GoogleMapDirectionApiAsyncTask() {
 
         }
 
@@ -445,196 +345,185 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         }
 
         private void setProgressDialog() {
+
+            progressDialog = new ProgressDialog(GoogleMapDirectionActivity.this);
             progressDialog.setMessage("Loading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
-
+            Log.e(getClass().getName(), "Progress Dialog is Showing");
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            GoogleMapDirectionJsonParser googleMapDirectionJsonParser = new GoogleMapDirectionJsonParser(
-                    userLatitudeVal, userLongitudeVal,
-                    latlongInfo.getLatitudeVal(),
-                    latlongInfo.getLongtitudeVal());
-            jsonData = googleMapDirectionJsonParser.getJsonData();
-            if (jsonData != null) {
-                Log.e(getClass().getName(), "Found 1");
-                try {
-                    JSONObject allJsonObject = new JSONObject(jsonData);
-                    JSONArray routesJsonArray = allJsonObject
-                            .getJSONArray("routes");
-                    JSONObject routesJObject = routesJsonArray.getJSONObject(0);
-                    JSONArray allLegJsonArray = routesJObject
-                            .getJSONArray("legs");
-                    JSONObject legJsonObject = allLegJsonArray.getJSONObject(0);
-                    durationText = getDurationText(legJsonObject);
-                    durationValue = getDurationVal(legJsonObject);
-                    distanceText = getDistanceText(legJsonObject);
-                    distanceValue = getDistanceVal(legJsonObject);
-                    startAddress = getStartAddress(legJsonObject);
-                    endAddress = getEndAddress(legJsonObject);
-                    copyRight = getCopyright(routesJObject);
-                    latLongList = getDirection(legJsonObject);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (latlongInfo != null && userLocation != null) {
+                touristSpotLatitude = String.valueOf(latlongInfo.getLatitudeVal());
+                touristSpotLongitude = String.valueOf(latlongInfo.getLongtitudeVal());
+                userLatitude = String.valueOf(userLocation.getUserLatitude());
+                userLongitude = String.valueOf(userLocation.getUserLongtitude());
+                String googleMapDirectionWebUrl = DIRECTION_API_WEB_ADDRESS_PART_1 + userLatitude +
+                        "," + userLongitude + DIRECTION_API_WEB_ADDRESS_PART_2 + touristSpotLatitude +
+                        "," + touristSpotLongitude + DIRECTION_API_WEB_ADDRESS_PART_3;
+                GoogleMapDirectionJsonAPIWebService googleMapDirectionJsonAPIWebService =
+                        new GoogleMapDirectionJsonAPIWebService(googleMapDirectionWebUrl);
+                Log.e(getClass().getName(), "Sending url to web client for getting json data");
+                jsonData = googleMapDirectionJsonAPIWebService.getJsonData();
+                if (jsonData != null) {
+                    return true;
                 }
-                return true;
 
-            } else {
-                Log.e(getClass().getName(), "No Found data");
-                return false;
             }
+            return false;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
-            if (progressDialog.isShowing()) {
+            if (jsonData != null && result == true) {
+                Log.e(getClass().getName(), "Data fetching Successfully");
+                try {
+                    JSONObject wholeJsonObject = new JSONObject(jsonData);
+                    JSONArray wholeRoutesArray = wholeJsonObject.getJSONArray(ROUTES_FIELD);
+                    JSONObject routesJsonObject = wholeRoutesArray.getJSONObject(0);
+                    JSONArray wholeLegJsonArray = routesJsonObject.getJSONArray(LEGS_FIELD);
+                    JSONObject legJsonObject = wholeLegJsonArray.getJSONObject(0);
+                    copyRight = getCopyRight(routesJsonObject);
+                    getAllDirectionRequiredVal(legJsonObject);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(getClass().getName(), "Data fetching failed");
+            }
+            if (progressDialog != null && progressDialog.isShowing()) {
                 progressDialog.dismiss();
-                if (result == true) {
-                    Log.d(getClass().getName(), "Parsing is successful");
-                    if (durationText != null && distanceText != null
-                            && startAddress != null && endAddress != null
-                            && copyRight != null && latLongList != null) {
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "Duration: " + durationText + "\n"
-                                        + "Distance: " + distanceText + "\n"
-                                        + "Present Address: " + startAddress
-                                        + "\n" + "Destination Address: "
-                                        + endAddress + "\n" + copyRight,
-                                Toast.LENGTH_LONG).show();
-                        PolylineOptions polylineOptions = new PolylineOptions()
-                                .width(3).color(Color.MAGENTA);
-                        for (int i = 0; i < latLongList.size(); i++) {
-                            LatLng latLng = latLongList.get(i);
-                            polylineOptions.add(latLng);
-                        }
-                        googleMap.addPolyline(polylineOptions);
+                showToastMessage();
+            }
 
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "sry no direction found", Toast.LENGTH_LONG)
-                                .show();
+        }
+
+        private void getAllDirectionRequiredVal(JSONObject legJsonObject) {
+            if (legJsonObject != null) {
+                Log.e(getClass().getName(), "Leg json object has been found");
+                distanceText = getDistanceText(legJsonObject);
+                durationText = getDurationText(legJsonObject);
+                startAddress = getStartAddress(legJsonObject);
+                endAddress = getEndAddress(legJsonObject);
+                directionPointslatLng = getPolyLinePoints(legJsonObject);
+                if (distanceText != null && durationText != null && startAddress != null &&
+                        endAddress != null && directionPointslatLng != null &&
+                        directionPointslatLng.size() > 0 && copyRight != null) {
+                    Log.e(getClass().getName(), "All steps has been found.");
+                    PolylineOptions polylineOptions = new PolylineOptions().width(5).visible(true)
+                            .color(Color.MAGENTA);
+                    for (int i = 0; i < directionPointslatLng.size(); i++) {
+                        polylineOptions.add(directionPointslatLng.get(i));
                     }
-
-                } else {
-                    Log.d(getClass().getName(), "parsing has been failed");
-
+                    googleMap.addPolyline(polylineOptions);
                 }
             }
         }
 
-        private String getDurationText(JSONObject jsonObject) {
-            String duration = null;
-            try {
-                JSONObject durationObject = jsonObject
-                        .getJSONObject("duration");
-                duration = durationObject.getString("text");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return duration;
-
-        }
-
-        private String getDurationVal(JSONObject jsonObject) {
-            String duration = null;
-            try {
-                JSONObject durationObject = jsonObject
-                        .getJSONObject("duration");
-                duration = String.valueOf(durationObject.getInt("value"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return duration;
-
-        }
-
-        private String getDistanceText(JSONObject jsonObject) {
-            String distance = null;
-            try {
-                JSONObject distanceObject = jsonObject
-                        .getJSONObject("distance");
-                distance = distanceObject.getString("text");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return distance;
-        }
-
-        private String getDistanceVal(JSONObject jsonObject) {
-            String distance = null;
-            try {
-                JSONObject distanceObject = jsonObject
-                        .getJSONObject("distance");
-                distance = String.valueOf(distanceObject.getString("value"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return distance;
-        }
-
-        private String getStartAddress(JSONObject jsonObject) {
-            String address = null;
-            try {
-                address = jsonObject.getString("start_address");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return address;
-        }
-
-        private String getEndAddress(JSONObject jsonObject) {
-            String address = null;
-            try {
-                address = jsonObject.getString("end_address");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return address;
-        }
-
-        private String getCopyright(JSONObject jsonObject) {
+        private String getCopyRight(JSONObject legJsonObject) {
             String copyRight = null;
             try {
-                copyRight = jsonObject.getString("copyrights");
+                copyRight = legJsonObject.getString(COPYRIGHT_FIELD);
+                Log.e(getClass().getName(), "CopyRight: " + copyRight);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return copyRight;
         }
 
-        private ArrayList<LatLng> getDirection(JSONObject jsonObject) {
-            ArrayList<LatLng> listGeoPoints = new ArrayList<LatLng>();
+        private String getEndAddress(JSONObject legJsonObject) {
+            String endAddress = null;
             try {
-                JSONArray allstepsArray = jsonObject.getJSONArray("steps");
-                for (int i = 0; i < allstepsArray.length(); i++) {
-                    JSONObject step = allstepsArray.getJSONObject(i);
-                    JSONObject start = step.getJSONObject("start_location");
-                    double startLat = start.getDouble("lat");
-                    double startLng = start.getDouble("lng");
-                    listGeoPoints.add(new LatLng(startLat, startLng));
-                    JSONObject polyLine = step.getJSONObject("polyline");
-                    ArrayList<LatLng> arr = decodePoly(polyLine
-                            .getString("points"));
-                    for (int j = 0; j < arr.size(); j++) {
-                        listGeoPoints.add(arr.get(j));
-                    }
-                    JSONObject end = step.getJSONObject("end_location");
-                    double endLat = end.getDouble("lat");
-                    double endLng = end.getDouble("lng");
-                    listGeoPoints.add(new LatLng(endLat, endLng));
+                endAddress = legJsonObject.getString(END_ADDRESS_FIELD);
+                Log.e(getClass().getName(), "End Address: " + endAddress);
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return endAddress;
+        }
+
+        private String getStartAddress(JSONObject legJsonObject) {
+            String startAddress = null;
+            try {
+                startAddress = legJsonObject.getString(START_ADDRESS_FIELD);
+                Log.e(getClass().getName(), "Start Address: " + startAddress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return startAddress;
+
+        }
+
+
+        private String getDurationText(JSONObject legJsonObject) {
+            String durationText = null;
+            try {
+                JSONObject durationJsonObject = legJsonObject.getJSONObject(DURATION_FIELD);
+                durationText = durationJsonObject.getString(TEXT_FIELD);
+                Log.e(getClass().getName(), "Duration : " + durationText);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return durationText;
+        }
+
+        private String getDistanceText(JSONObject legJsonObject) {
+            String distanceText = null;
+            try {
+                JSONObject distanceObject = legJsonObject.getJSONObject(DISTANCE_FIELD);
+                distanceText = distanceObject.getString(TEXT_FIELD);
+                Log.e(getClass().getName(), "Distance: " + distanceText);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return distanceText;
+        }
+
+        private ArrayList<LatLng> getPolyLinePoints(JSONObject legJsonObject) {
+            ArrayList<LatLng> polyLines = null;
+            JSONObject startLocation = null;
+            JSONObject endLocation = null;
+            JSONObject polyLine = null;
+            JSONObject jsonObject = null;
+            ArrayList<LatLng> decodePolyLineLatLngs;
+            double lat = 0;
+            double lng = 0;
+            try {
+                JSONArray stepsJsonArray = legJsonObject.getJSONArray(STEPS_FIELD);
+                if (stepsJsonArray != null) {
+                    Log.e(getClass().getName(), "All steps has been found.");
+                    polyLines = new ArrayList<LatLng>();
+                    for (int i = 0; i < stepsJsonArray.length(); i++) {
+                        jsonObject = stepsJsonArray.getJSONObject(i);
+                        startLocation = jsonObject.getJSONObject(START_LOCATION_FIELD);
+                        lat = startLocation.getDouble(LATITUDE_FIELD);
+                        lng = startLocation.getDouble(LONGTITUDE_FIELD);
+                        polyLines.add(new LatLng(lat, lng));
+                        polyLine = jsonObject.getJSONObject(POLYLINE_FIELD);
+                        decodePolyLineLatLngs = decodePoly(polyLine.getString(POINTS_FIELD));
+                        if (decodePolyLineLatLngs != null && decodePolyLineLatLngs.size() > 0) {
+                            for (int j = 0; j < decodePolyLineLatLngs.size(); j++) {
+                                LatLng latLng = decodePolyLineLatLngs.get(j);
+                                polyLines.add(latLng);
+                            }
+                        }
+                        endLocation = jsonObject.getJSONObject(END_LOCATION_FIELD);
+                        lat = endLocation.getDouble(LATITUDE_FIELD);
+                        lng = endLocation.getDouble(LONGTITUDE_FIELD);
+                        polyLines.add(new LatLng(lat, lng));
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            return listGeoPoints;
+            return polyLines;
         }
 
         private ArrayList<LatLng> decodePoly(String encoded) {
@@ -666,8 +555,6 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
             }
             return poly;
         }
-
     }
-
 }
 

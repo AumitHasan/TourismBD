@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    card_view:cardBackgroundColor="@color/background_material_dark"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="5dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/touristSpotImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/txtSpotName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTouristSpotSnippet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:padding="10dp"
+                android:background="@color/white" />
+
+            <Button
+                android:id="@+id/btnLearnMore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/buttonTextColor"
+                android:text="@string/btnLearnMore"
+                android:background="@color/white"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+

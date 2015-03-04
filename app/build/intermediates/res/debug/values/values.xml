@@ -54,22 +54,6 @@
         <item>Nilachal</item>
         <item>Nilgiri</item>
     </string-array>
-    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/values/colors.xml -->
-    <eat-comment/>
-    <integer-array name="androidcolors">
-        <item>@color/blue</item>
-        <item>@color/purple</item>
-        <item>@color/green</item>
-        <item>@color/orange</item>
-        <item>@color/red</item>
-        <item>@color/darkblue</item>
-        <item>@color/darkpurple</item>
-        <item>@color/darkgreen</item>
-        <item>@color/darkorange</item>
-        <item>@color/darkred</item>
-    </integer-array>
-    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/values/strings.xml -->
-    <eat-comment/>
     <string-array name="armenian_church">
         <item>@drawable/image_armenian_church</item>
         <item>@drawable/image_2_armenian_chruch</item>
@@ -176,6 +160,53 @@
         <item>@drawable/ic_wari_bateshwar</item>
         <item>@drawable/ic_nilachal</item>
         <item>@drawable/ic_nilgiri</item>
+    </string-array>
+    <string-array name="images_of_all_spots">
+        <item>@drawable/image_ahsan_manzil</item>
+        <item>@drawable/image_armenian_church</item>
+        <item>@drawable/image_bandarban</item>
+        <item>@drawable/image_bangabandhu_sheikh_mujib_safari_park</item>
+        <item>@drawable/image_bara_katra</item>
+        <item>@drawable/image_bhawal_national_park</item>
+        <item>@drawable/image_bhola</item>
+        <item>@drawable/image_buddha_dhatu_jadi</item>
+        <item>@drawable/image_coxs_bazar</item>
+        <item>@drawable/image_curzon_hall</item>
+        <item>@drawable/image_hatiya</item>
+        <item>@drawable/image_hum_hum</item>
+        <item>@drawable/image_jadipai</item>
+        <item>@drawable/image_jaflong</item>
+        <item>@drawable/image_jagaddala_mahavihara</item>
+        <item>@drawable/image_jatiyo_sangshad_bhaban</item>
+        <item>@drawable/image_jatiyo_smriti_soudho</item>
+        <item>@drawable/image_kantajew_temple</item>
+        <item>@drawable/image_khagrachari</item>
+        <item>@drawable/image_kuakata</item>
+        <item>@drawable/image_kutubdia</item>
+        <item>@drawable/image_lalbagh_fort</item>
+        <item>@drawable/image_lawachara_national_park</item>
+        <item>@drawable/image_madhabkunda</item>
+        <item>@drawable/image_mahasthangarh</item>
+        <item>@drawable/image_mainamati</item>
+        <item>@drawable/image_monpura</item>
+        <item>@drawable/image_mosque_city_of_bagerhat</item>
+        <item>@drawable/image_nafa_khum</item>
+        <item>@drawable/image_nijhum_dwip</item>
+        <item>@drawable/image_northbrook_hall</item>
+        <item>@drawable/image_patenga</item>
+        <item>@drawable/image_rangamati</item>
+        <item>@drawable/image_sandwip</item>
+        <item>@drawable/image_shaheed_minar</item>
+        <item>@drawable/image_shatgumbujmosque</item>
+        <item>@drawable/image_somapuramahavihara</item>
+        <item>@drawable/image_sonadia_island</item>
+        <item>@drawable/image_sonargaon</item>
+        <item>@drawable/image_srimangal</item>
+        <item>@drawable/image_st_martin_island</item>
+        <item>@drawable/image_the_sundarbans</item>
+        <item>@drawable/image_wari_bateshwar</item>
+        <item>@drawable/image_nilachal</item>
+        <item>@drawable/image_nilgiri</item>
     </string-array>
     <string-array name="jadipai_waterfall">
         <item>@drawable/image_jadipai</item>
@@ -396,10 +427,25 @@
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <item name="brown" type="color">#663300</item>
+    <color name="buttonTextColor">#2196f3</color>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
+    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
+    <color name="cardview_dark_background">#FF202020</color>
+    <color name="cardview_light_background">#FFFAFAFA</color>
+    <color name="cardview_shadow_end_color">#03000000</color>
+    <color name="cardview_shadow_start_color">#37000000</color>
+    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="colorAccent">#47B547</color>
+    <color name="colorNavigationBarColor">@android:color/transparent</color>
+    <color name="colorPrimary">#f44336</color>
+    <color name="colorPrimaryDark">#d32f2f</color>
+    <color name="colorTextPrimary">#ffffff</color>
+    <color name="colorTextSecondary">#9e9e9e</color>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/common_colors.xml -->
     <eat-comment/>
     <color name="common_action_bar_splitter">#d2d2d2</color>
@@ -433,6 +479,7 @@
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <item name="green" type="color">#FF99CC00</item>
+    <color name="grey">#A8A8A8</color>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
@@ -510,6 +557,7 @@
     <declare-styleable name="ActionMode"><attr name="titleTextStyle"/><attr name="subtitleTextStyle"/><attr name="background"/><attr name="backgroundSplit"/><attr name="height"/><attr format="reference" name="closeItemLayout"/></declare-styleable>
     <declare-styleable name="ActivityChooserView"><attr format="string" name="initialActivityCount"/><attr format="reference" name="expandActivityOverflowButtonDrawable"/></declare-styleable>
     <declare-styleable name="AdsAttrs"><attr format="string" name="adSize"/><attr format="string" name="adSizes"/><attr format="string" name="adUnitId"/></declare-styleable>
+    <declare-styleable name="CardView"><attr format="color" name="cardBackgroundColor"/><attr format="dimension" name="cardCornerRadius"/><attr format="dimension" name="cardElevation"/><attr format="dimension" name="cardMaxElevation"/><attr format="boolean" name="cardUseCompatPadding"/><attr format="boolean" name="cardPreventCornerOverlap"/><attr format="dimension" name="contentPadding"/><attr format="dimension" name="contentPaddingLeft"/><attr format="dimension" name="contentPaddingRight"/><attr format="dimension" name="contentPaddingTop"/><attr format="dimension" name="contentPaddingBottom"/></declare-styleable>
     <declare-styleable name="CompatTextView"><attr format="reference|boolean" name="textAllCaps"/></declare-styleable>
     <declare-styleable name="DrawerArrowToggle"><attr format="color" name="color"/><attr format="boolean" name="spinBars"/><attr format="dimension" name="drawableSize"/><attr format="dimension" name="gapBetweenBars"/><attr format="dimension" name="topBottomBarArrowSize"/><attr format="dimension" name="middleBarArrowSize"/><attr format="dimension" name="barSize"/><attr format="dimension" name="thickness"/></declare-styleable>
     <declare-styleable name="LinearLayoutCompat"><attr name="android:orientation"/><attr name="android:gravity"/><attr name="android:baselineAligned"/><attr name="android:baselineAlignedChildIndex"/><attr name="android:weightSum"/><attr format="boolean" name="measureWithLargestChild"/><attr name="divider"/><attr name="showDividers"><flag name="none" value="0"/><flag name="beginning" value="1"/><flag name="middle" value="2"/><flag name="end" value="4"/></attr><attr format="dimension" name="dividerPadding"/></declare-styleable>
@@ -574,6 +622,11 @@
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
+    <dimen name="cardview_compat_inset_shadow">1dp</dimen>
+    <dimen name="cardview_default_elevation">2dp</dimen>
+    <dimen name="cardview_default_radius">2dp</dimen>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <item name="dialog_fixed_height_major" type="dimen">80%</item>
@@ -621,12 +674,16 @@
     <string name="action_settings">Settings</string>
     <string name="add_Favourites">Add to favourites</string>
     <string name="app_name">Tourism BD</string>
+    <string name="btnLearnMore">LEARN MORE</string>
+    <string name="btnSeeVideo">SEE VIDEO</string>
     <string name="btn_ban_tourism_board">Bangladesh Tourism Board</string>
     <string name="btn_direction">Show Direction</string>
+    <string name="btn_discard_tourist_spot">DISACARD</string>
     <string name="btn_map">Show Map</string>
     <string name="btn_porjaton_corp">Porjoton Corporation</string>
-    <string name="btn_remove_spot_no">no</string>
-    <string name="btn_remove_spot_yes">yes</string>
+    <string name="btn_remove_spot_no">CANCEL</string>
+    <string name="btn_remove_spot_yes">DISCARD</string>
+    <string name="btn_see_tourist_spot">SEE SPOT</string>
     <string name="btn_visit_ban">Visit Bangladesh</string>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/common_strings.xml -->
     <eat-comment/>
@@ -674,6 +731,7 @@
     <string name="label_hotels">Hotels/Restaurants</string>
     <string name="label_location">Spot Location</string>
     <string name="label_tourism_discrip_in_BD">Tourism In Bangladesh</string>
+    <string name="reloadDirection">Reload Direction</string>
     <string name="showDirectionInfo">Show Direction Info</string>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/res/values/admob_strings.xml -->
     <eat-comment/>
@@ -705,8 +763,18 @@
     <string name="wallet_buy_button_place_holder" translation_description="Text on a button that allows a user to make a payment with Google Wallet [CHAR LIMIT=30]">Buy with Google</string>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/values/styles.xml -->
     <eat-comment/>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="ActionBarTheme" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
+        
+    </style>
+    <style name="AppTheme" parent="AppTheme.Base">
         <!-- Customize your theme here. -->
+    </style>
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
     </style>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
@@ -1462,6 +1530,24 @@
         <item name="android:scaleType">center</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
+    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
+    <style name="CardView">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardMaxElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardPreventCornerOverlap">true</item>
+    </style>
+    <style name="CardView.Dark">
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+    </style>
+    <style name="CardView.Light">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
+    </style>
+    <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <eat-comment/>
     <style name="Platform.AppCompat" parent="android:Theme">
         <item name="android:windowNoTitle">true</item>
         <item name="buttonBarStyle">@android:style/ButtonBar</item>

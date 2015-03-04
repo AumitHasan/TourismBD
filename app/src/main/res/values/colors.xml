@@ -27,17 +27,16 @@
     <item name="lightorange" type="color">#FF9966</item>
     <item name="darkblue2" type="color">#1975FF</item>
 
-    <integer-array name="androidcolors">
-        <item>@color/blue</item>
-        <item>@color/purple</item>
-        <item>@color/green</item>
-        <item>@color/orange</item>
-        <item>@color/red</item>
-        <item>@color/darkblue</item>
-        <item>@color/darkpurple</item>
-        <item>@color/darkgreen</item>
-        <item>@color/darkorange</item>
-        <item>@color/darkred</item>
-    </integer-array>
+    <color name="colorPrimary">#f44336</color>
+    <color name="colorPrimaryDark">#d32f2f</color>
+    <color name="colorTextPrimary">#ffffff</color>
+    <color name="colorTextSecondary">#9e9e9e</color>
+    <color name="colorNavigationBarColor">@android:color/transparent</color>
+    <color name="buttonTextColor">#2196f3</color>
+    <color name="colorAccent">#47B547</color>
+    <color name="grey">#A8A8A8</color>
+
+
+
 
 </resources>

@@ -1,10 +1,10 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.fragments;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +12,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.apppreview.shuvojit.tourismbd.R;
+import com.apppreview.shuvojit.tourismbd.allpackges.activities.TouristSpotInfoActivity;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
 import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapInterface;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.Intializer;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -29,77 +32,94 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 public class GoogleMapForAllSpotsFragment extends Fragment implements
-        GoogleMapInterface, Intializer {
+        GoogleMapInterface, InitializerClient {
 
-    OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
 
-        @Override
-        public void onInfoWindowClick(Marker marker) {
-            Toast.makeText(context,
-                    marker.getTitle() + "\n" + marker.getSnippet(),
-                    Toast.LENGTH_LONG).show();
-
-        }
-    };
     private Context context;
     private MapFragment mapFragment;
     private GoogleMap googleMap;
-    private TourismGuiderDatabase tourismGuiderDatabase;
     private ArrayList<LatLongInfo> latLongInfoList;
     private ArrayList<Marker> allMarkers;
     private MarkerOptions markerOptions;
     private View fragmentView;
     private FragmentManager fragmentManager;
+    private double cameraLatVal;
+    private double cameraLngVal;
+
+
 
     public GoogleMapForAllSpotsFragment() {
 
     }
 
+    public static GoogleMapForAllSpotsFragment getNewInstance(
+            ArrayList<LatLongInfo> latLongInfoList,
+            double cameraMoveLatVal,
+            double cameraMoveLngVal
+            ) {
+        GoogleMapForAllSpotsFragment googleMapForAllSpotsFragment = new
+                GoogleMapForAllSpotsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Lat long info list", latLongInfoList);
+        bundle.putDouble("Camera Move Lat Val", cameraMoveLatVal);
+        bundle.putDouble("Camera Move Lng Val", cameraMoveLngVal);
+        googleMapForAllSpotsFragment.setArguments(bundle);
+        return googleMapForAllSpotsFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            latLongInfoList = (ArrayList<LatLongInfo>) bundle.
+                    getSerializable("Lat long info list");
+            cameraLatVal = bundle.getDouble("Camera Move Lat Val");
+            cameraLngVal = bundle.getDouble("Camera Move Lng Val");
+
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (fragmentView == null && mapFragment == null && googleMap == null) {
-            fragmentView = inflater.inflate(R.layout.google_map_layout, container,
-                    false);
-            intialize();
-            setGoogleMapCameraMove();
-            setAllMarkersOnMap();
-            googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(
-                    context));
-            googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
-        }
-        return fragmentView;
 
+        fragmentView = inflater.inflate(R.layout.google_map_layout, container,
+                false);
+        initialize();
+        googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(
+                context));
+        googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+        return fragmentView;
     }
 
     @Override
-    public void intialize() {
-        context = getActivity();
-        fragmentManager = getActivity().getFragmentManager();
-        mapFragment = (MapFragment) fragmentManager
-                .findFragmentById(R.id.googleMap);
-        googleMap = mapFragment.getMap();
-        tourismGuiderDatabase = TourismGuiderDatabase.getTourismGuiderDatabase(context);
-
+    public void initialize() {
+        if(fragmentView != null) {
+            context = getActivity();
+            fragmentManager = getActivity().getFragmentManager();
+            mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.googleMap);
+            googleMap = mapFragment.getMap();
+            setGoogleMapCameraMove(cameraLatVal, cameraLngVal);
+            setAllMarkersOnMap();
+            UiSettings googleMapUiSettings = googleMap.getUiSettings();
+            googleMapUiSettings.setMapToolbarEnabled(false);
+        }
     }
 
-    private void setGoogleMapCameraMove() {
+    private void setGoogleMapCameraMove(double cameraLatVal, double cameraLngVal) {
         if (googleMap != null) {
-            LatLng Bangladesh = new LatLng(23.7000, 90.3500);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Bangladesh,
+            LatLng spotLatLng = new LatLng(cameraLatVal, cameraLngVal);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spotLatLng,
                     6.0f));
         }
     }
 
-    private void getAllLatlongInfoFromDB() {
-        latLongInfoList = tourismGuiderDatabase.getLatLongInfo();
-        allMarkers = new ArrayList<Marker>();
-    }
-
     private void setAllMarkersOnMap() {
-        getAllLatlongInfoFromDB();
         LatLongInfo latLongInfo = null;
         Marker marker = null;
+        allMarkers = new ArrayList<Marker>();
         if (latLongInfoList != null && latLongInfoList.size() > 0) {
             for (int i = 0; i < latLongInfoList.size(); i++) {
                 latLongInfo = latLongInfoList.get(i);
@@ -112,29 +132,26 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
                 marker = googleMap.addMarker(markerOptions);
                 setMarkerIcons(marker, latLongInfo.getSpotType());
                 allMarkers.add(marker);
-
             }
         }
     }
 
     @Override
     public void onDestroyView() {
+
+        try {
+            fragmentManager.beginTransaction().remove(mapFragment).commit();
+            //remove(mapFragment).commit();
+            googleMap = null;
+            mapFragment = null;
+            fragmentManager = null;
+            fragmentView = null;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         super.onDestroyView();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.remove(mapFragment);
-        ft.commit();
-        googleMap = null;
-        mapFragment = null;
-        fragmentView = null;
-        Log.e(getClass().getName(), "map removed");
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        tourismGuiderDatabase.close();
-        Log.e(getClass().getName(), "Database close");
     }
 
     @Override
@@ -207,4 +224,48 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
 
     }
 
+    private LatLongInfo getLatLngInfo(Marker marker) {
+        LatLongInfo latLongInfo = null;
+        for (int i = 0; i <= allMarkers.size(); i++) {
+            String spotName = allMarkers.get(i).getTitle();
+            if (spotName.equalsIgnoreCase(marker.getTitle())) {
+                latLongInfo = latLongInfoList.get(i);
+                break;
+            }
+        }
+        return latLongInfo;
+    }
+
+    private void setSpotActivity(String spotName, String spotType) {
+        TourismGuiderDatabase tourismGuiderDatabase = TourismGuiderDatabase.
+                getTourismGuiderDatabase(context);
+        SpotInfo spotInfo = tourismGuiderDatabase.getSpotInfo(spotName, spotType);
+        LatLongInfo latLongInfo = tourismGuiderDatabase.getLatLongInfo(spotName, spotType);
+        if (spotInfo != null && latLongInfo != null) {
+            Log.d(getClass().getName(), "found");
+            Intent intent = new Intent(context, TouristSpotInfoActivity.class);
+            intent.putExtra("SpotInfo", spotInfo);
+            intent.putExtra("SpotLatLongInfo", latLongInfo);
+            tourismGuiderDatabase.close();
+            context.startActivity(intent);
+        }
+
+    }
+
+    OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
+
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+
+            if (getActivity().getClass().getSimpleName().equalsIgnoreCase("MainActivity")) {
+                LatLongInfo latLongInfo = getLatLngInfo(marker);
+                setSpotActivity(latLongInfo.getSpotName(), latLongInfo.getSpotType());
+
+            } else {
+                Toast.makeText(context, marker.getSnippet(), Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+    };
 }

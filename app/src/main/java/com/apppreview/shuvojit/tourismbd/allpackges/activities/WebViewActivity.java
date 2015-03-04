@@ -3,20 +3,20 @@ package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.apppreview.shuvojit.tourismbd.R;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.Intializer;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
 
-public class WebViewActivity extends ActionBarActivity implements Intializer {
+public class WebViewActivity extends ActionBarActivity implements InitializerClient {
 
     private WebView webView;
     private Intent intent;
@@ -24,33 +24,34 @@ public class WebViewActivity extends ActionBarActivity implements Intializer {
     private String actionBarName;
     private ProgressDialog progressDialog;
     private ActionBar actionBar;
+    private Toolbar toolbar;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.web_view_activity_layout);
-        intialize();
+        initialize();
         webView.getSettings().setJavaScriptEnabled(true);
         if (url != null && actionBarName != null) {
             setTitle(actionBarName);
             webView.loadUrl(url);
             showProgressDialog();
         }
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.darkred)));
         webView.setWebViewClient(webViewClient);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
-    public void intialize() {
+    public void initialize() {
         url = null;
         actionBarName = null;
         webView = (WebView) findViewById(R.id.webView);
         intent = getIntent();
         url = intent.getStringExtra("URL");
+        toolbar = new Toolbar(WebViewActivity.this);
+        setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBarName = intent.getStringExtra("ACTION_BAR_NAME");
         progressDialog = new ProgressDialog(WebViewActivity.this);
@@ -66,7 +67,7 @@ public class WebViewActivity extends ActionBarActivity implements Intializer {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.web_view, menu);
+        getMenuInflater().inflate(R.menu.web_view_activity_menu, menu);
         return true;
     }
 

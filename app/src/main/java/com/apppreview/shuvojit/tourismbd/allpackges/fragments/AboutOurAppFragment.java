@@ -1,23 +1,27 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.fragments;
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.apppreview.shuvojit.tourismbd.R;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.Intializer;
 
 
-public class AboutOurAppFragment extends Fragment implements Intializer {
+public class AboutOurAppFragment extends Fragment {
 
     private Context context;
     private View fragmentView;
 
     public AboutOurAppFragment() {
 
+    }
+
+    public static AboutOurAppFragment getInstance() {
+        return new AboutOurAppFragment();
     }
 
 
@@ -29,8 +33,5 @@ public class AboutOurAppFragment extends Fragment implements Intializer {
         return fragmentView;
     }
 
-    @Override
-    public void intialize() {
 
-    }
 }

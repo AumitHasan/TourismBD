@@ -2,53 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pop_up_window_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#585858"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/primary_dark_material_dark"
+    >
 
     <TextView
         android:id="@+id/txt_pop_up_window_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="1"
         android:padding="10dp"
-        android:text=""
+        android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#fff" />
+        android:textColor="@color/colorTextPrimary" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="10dp" >
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:gravity="bottom|end"
+        >
 
         <Button
-            android:id="@+id/btn_remove_spot_yes"
+            android:id="@+id/btn_no"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="#53A6CF"
-            android:gravity="center"
-            android:text="@string/btn_remove_spot_yes"
-            android:textColor="#fff" />
-
-        <Button
-            android:id="@+id/btn_remove_spot_no"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_weight="1"
-            android:background="#53A6CF"
-            android:gravity="center"
+            android:textSize="15sp"
             android:text="@string/btn_remove_spot_no"
-            android:textColor="#fff" />
+            android:textColor="@color/buttonTextColor" />
+
+        <Button
+            android:id="@+id/btn_yes"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="@string/btn_remove_spot_yes"
+            android:textColor="@color/buttonTextColor" />
     </LinearLayout>
 
 </LinearLayout>

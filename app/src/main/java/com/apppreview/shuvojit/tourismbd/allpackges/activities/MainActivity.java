@@ -1,11 +1,11 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -20,69 +20,45 @@ import android.widget.ListView;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.listViewAdapters.NavDrawerListViewAdapter;
+import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.AboutOurAppFragment;
-import com.apppreview.shuvojit.tourismbd.allpackges.fragments.AllSiteTypeListFragment;
-import com.apppreview.shuvojit.tourismbd.allpackges.fragments.DocumentryVideoListFragment;
-import com.apppreview.shuvojit.tourismbd.allpackges.fragments.FavourtiesFragment;
+import com.apppreview.shuvojit.tourismbd.allpackges.fragments.FavouritesFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.GoogleMapForAllSpotsFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.HomeFragment;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.Intializer;
+import com.apppreview.shuvojit.tourismbd.allpackges.fragments.TourismInfoListFragment;
+import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
+
+import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements Intializer {
+public class MainActivity extends ActionBarActivity implements InitializerClient {
 
     private DrawerLayout drawerLayout;
     private ListView navDrawerListView;
     private ActionBarDrawerToggle navDrawerListener;
     private NavDrawerListViewAdapter navDrawerListViewAdapter;
     private String[] navDrawerlistItem;
-
-    OnItemClickListener navDrawerItemListener = new OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-
-            selectPostion(position);
-        }
-
-        private void selectPostion(int position) {
-
-            navDrawerListView.setItemChecked(position, true);
-            setTitle(navDrawerlistItem[position]);
-            Log.e(getClass().getName(), navDrawerlistItem[position]
-                    + " is selected");
-            setFragment(position);
-
-        }
-    };
     private FragmentManager fragmentManager;
-    private AllSiteTypeListFragment allSiteTypeListFragment;
     private HomeFragment homeFragment;
-    private GoogleMapForAllSpotsFragment googleMapForAllSpotsFragment;
-    private AboutOurAppFragment aboutOurAppFragment;
-    private DocumentryVideoListFragment documentryVideoListFragment;
-    private FavourtiesFragment favourtiesFragment;
     private ActionBar actionBar;
-
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_layout);
-        intialize();
+        initialize();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                .getColor(R.color.darkred)));
         homeFragment = new HomeFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_fragment, homeFragment).commit();
     }
 
     @Override
-    public void intialize() {
-        fragmentManager = getFragmentManager();
+    public void initialize() {
+        fragmentManager = getSupportFragmentManager();
         actionBar = getSupportActionBar();
         navDrawerlistItem = getResources().getStringArray(
                 R.array.nav_drawer_categories);
@@ -117,26 +93,32 @@ public class MainActivity extends ActionBarActivity implements Intializer {
 
     private void setFragment(int position) {
         String navDrawerCategory = navDrawerlistItem[position];
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = null;
+       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragment = null;
         switch (navDrawerCategory) {
             case "Maps":
-                fragment = new GoogleMapForAllSpotsFragment();
+                TourismGuiderDatabase tourismGuiderDatabase = TourismGuiderDatabase.
+                        getTourismGuiderDatabase(MainActivity.this);
+                ArrayList<LatLongInfo> latLongInfoArrayList = tourismGuiderDatabase.
+                        getLatLongInfo();
+                if (latLongInfoArrayList != null && latLongInfoArrayList.size() > 0) {
+                    double cameraLatVal = 23.7000;
+                    double cameraLngVal = 90.3500;
+                    fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
+                            cameraLatVal, cameraLngVal);
+                }
                 break;
             case "Home":
-                fragment = new HomeFragment();
-                break;
-            case "Documentry Videos":
-                fragment = new DocumentryVideoListFragment();
+                fragment = HomeFragment.getNewInstance();
                 break;
             case "Favourites":
-                fragment = new FavourtiesFragment();
+                fragment = FavouritesFragment.getNewInstance();
                 break;
             case "About":
-                fragment = new AboutOurAppFragment();
+                fragment = AboutOurAppFragment.getInstance();
                 break;
             default:
-                fragment = AllSiteTypeListFragment.newInstance(navDrawerCategory);
+                fragment = TourismInfoListFragment.getNewInstance(navDrawerCategory);
                 break;
         }
         if (fragment != null && fragmentTransaction != null) {
@@ -176,6 +158,27 @@ public class MainActivity extends ActionBarActivity implements Intializer {
         super.onConfigurationChanged(newConfig);
         navDrawerListener.onConfigurationChanged(newConfig);
     }
+    OnItemClickListener navDrawerItemListener = new OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+
+            selectPostion(position);
+        }
+
+        private void selectPostion(int position) {
+
+            navDrawerListView.setItemChecked(position, true);
+            setTitle(navDrawerlistItem[position]);
+            Log.e(getClass().getName(), navDrawerlistItem[position]
+                    + " is selected");
+            setFragment(position);
+
+        }
+    };
+
+
 
 }
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/info_window_adapter_spot_image"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_weight="1"
+        android:scaleType="center"
         android:src="@drawable/image_user" />
 
     <TextView
@@ -18,8 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/deepblue" />
+        android:padding="5dp"
+        android:textColor="@color/colorAccent" />
 
 </LinearLayout><!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/layout/google_map_info_window_adapter_layout.xml -->

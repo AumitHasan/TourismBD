@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class SpotInfo implements Serializable {
 
 	private String spotName, locationInfo, discripInfo, famousInfo, hotelsInfo,
-			urlInfo, spotTypeInfo;
+			urlInfo, spotTypeInfo, spotSnippet;
 	private int id;
 
 	public String getSpotTypeInfo() {
@@ -25,11 +25,11 @@ public class SpotInfo implements Serializable {
 		this.id = id;
 	}
 
-	public SpotInfo(int id, String spotName, String spotTypeInfo) {
+	public SpotInfo(int id, String spotName, String spotTypeInfo, String spotSnippet) {
 		this.id = id;
 		this.spotName = spotName;
 		this.spotTypeInfo = spotTypeInfo;
-
+        this.spotSnippet = spotSnippet;
 	}
 
 	public SpotInfo(String spotName, String locationInfo, String discripInfo,
@@ -90,4 +90,11 @@ public class SpotInfo implements Serializable {
 		this.urlInfo = urlInfo;
 	}
 
+    public String getSpotSnippet() {
+        return spotSnippet;
+    }
+
+    public void setSpotSnippet(String spotSnippet) {
+        this.spotSnippet = spotSnippet;
+    }
 }

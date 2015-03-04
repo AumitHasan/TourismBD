@@ -62,6 +62,9 @@
         <activity
             android:name="com.apppreview.shuvojit.tourismbd.allpackges.activities.TouristSpotInfoActivity"
             android:label="@string/title_activity_tourist_spot_info" />
+        <activity
+            android:name="android.support.v7.widget.TestActivity"
+            android:label="RecyclerViewTestActivity" />
     </application>
 
 </manifest>

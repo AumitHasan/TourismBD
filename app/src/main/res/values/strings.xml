@@ -91,6 +91,54 @@
     <string name="title_activity_google_map_for_each_spot">GoogleMapForEachSpot</string>
     <string name="title_activity_direction_for_each_spot">DirectionForEachSpot</string>
 
+    <string-array name="images_of_all_spots">
+        <item>@drawable/image_ahsan_manzil</item>
+        <item>@drawable/image_armenian_church</item>
+        <item>@drawable/image_bandarban</item>
+        <item>@drawable/image_bangabandhu_sheikh_mujib_safari_park</item>
+        <item>@drawable/image_bara_katra</item>
+        <item>@drawable/image_bhawal_national_park</item>
+        <item>@drawable/image_bhola</item>
+        <item>@drawable/image_buddha_dhatu_jadi</item>
+        <item>@drawable/image_coxs_bazar</item>
+        <item>@drawable/image_curzon_hall</item>
+        <item>@drawable/image_hatiya</item>
+        <item>@drawable/image_hum_hum</item>
+        <item>@drawable/image_jadipai</item>
+        <item>@drawable/image_jaflong</item>
+        <item>@drawable/image_jagaddala_mahavihara</item>
+        <item>@drawable/image_jatiyo_sangshad_bhaban</item>
+        <item>@drawable/image_jatiyo_smriti_soudho</item>
+        <item>@drawable/image_kantajew_temple</item>
+        <item>@drawable/image_khagrachari</item>
+        <item>@drawable/image_kuakata</item>
+        <item>@drawable/image_kutubdia</item>
+        <item>@drawable/image_lalbagh_fort</item>
+        <item>@drawable/image_lawachara_national_park</item>
+        <item>@drawable/image_madhabkunda</item>
+        <item>@drawable/image_mahasthangarh</item>
+        <item>@drawable/image_mainamati</item>
+        <item>@drawable/image_monpura</item>
+        <item>@drawable/image_mosque_city_of_bagerhat</item>
+        <item>@drawable/image_nafa_khum</item>
+        <item>@drawable/image_nijhum_dwip</item>
+        <item>@drawable/image_northbrook_hall</item>
+        <item>@drawable/image_patenga</item>
+        <item>@drawable/image_rangamati</item>
+        <item>@drawable/image_sandwip</item>
+        <item>@drawable/image_shaheed_minar</item>
+        <item>@drawable/image_shatgumbujmosque</item>
+        <item>@drawable/image_somapuramahavihara</item>
+        <item>@drawable/image_sonadia_island</item>
+        <item>@drawable/image_sonargaon</item>
+        <item>@drawable/image_srimangal</item>
+        <item>@drawable/image_st_martin_island</item>
+        <item>@drawable/image_the_sundarbans</item>
+        <item>@drawable/image_wari_bateshwar</item>
+        <item>@drawable/image_nilachal</item>
+        <item>@drawable/image_nilgiri</item>
+    </string-array>
+
     <string-array name="ic_of_all_spots">
         <item>@drawable/ic_ahsan_manzil</item>
         <item>@drawable/ic_armenian_church</item>
@@ -378,13 +426,18 @@
         <item>@drawable/image_3_shaheed_minar</item>
     </string-array>
 
-    <string name="btn_remove_spot_yes">yes</string>
-    <string name="btn_remove_spot_no">no</string>
+    <string name="btn_remove_spot_yes">DISCARD</string>
+    <string name="btn_remove_spot_no">CANCEL</string>
     <string name="showDirectionInfo">Show Direction Info</string>
 
 
     <string name="title_activity_google_map_direction">GoogleMapDirectionActivity</string>
     <string name="title_activity_youtube_documentry_video">YoutubeDocumentryVideoActivity</string>
     <string name="title_activity_tourist_spot_info">TouristSpotInfoActivity</string>
+    <string name="btnLearnMore">LEARN MORE</string>
+    <string name="btnSeeVideo">SEE VIDEO</string>
+    <string name="reloadDirection">Reload Direction</string>
+    <string name="btn_see_tourist_spot">SEE SPOT</string>
+    <string name="btn_discard_tourist_spot">DISACARD</string>
 
 </resources>

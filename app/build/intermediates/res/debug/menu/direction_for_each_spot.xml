@@ -5,9 +5,16 @@
 
     <item
         android:id="@+id/showDirectionInfo"
-        app:showAsAction="never|withText"
+        app:showAsAction="always"
         android:title="@string/showDirectionInfo"
-        android:orderInCategory="1"
-        />
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_action_directions" />
+
+    <item
+        android:id="@+id/reloadDirection"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/reloadDirection"
+        android:orderInCategory="100" />
 
 </menu><!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/src/main/res/menu/direction_for_each_spot.xml -->

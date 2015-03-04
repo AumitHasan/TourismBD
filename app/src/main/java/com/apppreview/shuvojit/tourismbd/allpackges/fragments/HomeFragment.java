@@ -1,10 +1,10 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.fragments;
 
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,10 +13,10 @@ import android.widget.Button;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.activities.WebViewActivity;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.Intializer;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
 public class HomeFragment extends Fragment implements OnClickListener,
-        Intializer {
+        InitializerClient {
 
     private Context context;
     private Button btnGoTourismBangladesh, btnGoVisitBan, btnGoPorjatonCorp;
@@ -27,12 +27,16 @@ public class HomeFragment extends Fragment implements OnClickListener,
 
     }
 
+    public static HomeFragment getNewInstance() {
+        return new HomeFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.home_fragment_layout,
                 container, false);
-        intialize();
+        initialize();
         btnGoTourismBangladesh.setOnClickListener(this);
         btnGoVisitBan.setOnClickListener(this);
         btnGoPorjatonCorp.setOnClickListener(this);
@@ -40,7 +44,7 @@ public class HomeFragment extends Fragment implements OnClickListener,
     }
 
     @Override
-    public void intialize() {
+    public void initialize() {
         if (fragmentView != null) {
             context = getActivity();
             btnGoTourismBangladesh = (Button) fragmentView

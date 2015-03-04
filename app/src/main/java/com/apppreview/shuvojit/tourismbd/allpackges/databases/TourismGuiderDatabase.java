@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.DocumentryVideoInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.infos.DocumentaryVideoInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.FavouritesSpotInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DatabaseCheckerClient;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DatabaseClient;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 
 public class TourismGuiderDatabase extends SQLiteOpenHelper implements
-        DatabaseCheckerClient {
+        DatabaseClient {
 
     private static TourismGuiderDatabase spotInfoDB;
     private SQLiteDatabase DB;
@@ -216,7 +216,7 @@ public class TourismGuiderDatabase extends SQLiteOpenHelper implements
     public int removeSpotFrom(String spotName) {
         int isRemoved = 0;
         DB = getReadableDatabase();
-        isRemoved = DB.delete(DB_TABLE_NAME_3, SPOT_NAME_FIELD + " = ?",
+        isRemoved = DB.delete(FAVOURITES_LIST_TABLE, SPOT_NAME_FIELD + " = ?",
                 new String[]{spotName});
         return isRemoved;
     }
@@ -224,8 +224,8 @@ public class TourismGuiderDatabase extends SQLiteOpenHelper implements
     public ArrayList<SpotInfo> getSpotNameList(String spotType) {
         ArrayList<SpotInfo> spotNameList = null;
         DB = getReadableDatabase();
-        Cursor cursor = DB.query(SPOT_INFO_TABLE, new String[]{ID_FIELD,
-                        SPOT_NAME_FIELD, SPOT_TYPE_FIELD}, SPOT_TYPE_FIELD + " = ?",
+        Cursor cursor = DB.query(LAT_LONG_INFO_OF_ALL_SPOTS_TABLE, new String[]{ID_FIELD,
+                        SPOT_NAME_FIELD, SPOT_TYPE_FIELD, SPOT_SNIPPET_FIELD}, SPOT_TYPE_FIELD + " = ?",
                 new String[]{spotType}, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             spotNameList = new ArrayList<SpotInfo>();
@@ -236,7 +236,8 @@ public class TourismGuiderDatabase extends SQLiteOpenHelper implements
                         .getColumnIndex(SPOT_NAME_FIELD));
                 String spotTypeName = cursor.getString(cursor
                         .getColumnIndex(SPOT_TYPE_FIELD));
-                SpotInfo spotInfo = new SpotInfo(id, spotName, spotTypeName);
+                String spotSnippet = cursor.getString(cursor.getColumnIndex(SPOT_SNIPPET_FIELD));
+                SpotInfo spotInfo = new SpotInfo(id, spotName, spotTypeName, spotSnippet);
                 spotNameList.add(spotInfo);
                 cursor.moveToNext();
             }
@@ -308,28 +309,28 @@ public class TourismGuiderDatabase extends SQLiteOpenHelper implements
         return res;
     }
 
-    public ArrayList<DocumentryVideoInfo> getDocVideoInfo() {
-        ArrayList<DocumentryVideoInfo> documentryVideoInfoList = null;
+    public ArrayList<DocumentaryVideoInfo> getDocVideoInfo() {
+        ArrayList<DocumentaryVideoInfo> documentaryVideoInfoList = null;
         DB = getReadableDatabase();
         Cursor cursor = DB
                 .query(DOC_VIDEO_TABLE, null, null, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
-            documentryVideoInfoList = new ArrayList<DocumentryVideoInfo>();
+            documentaryVideoInfoList = new ArrayList<DocumentaryVideoInfo>();
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
                 int id = cursor.getInt(cursor.getColumnIndex(ID_FIELD));
                 String name = cursor.getString(cursor
                         .getColumnIndex(DOC_NAME_FIELD));
                 String key = cursor.getString(cursor.getColumnIndex(KEY_FIELD));
-                DocumentryVideoInfo documentryVideoInfo = new DocumentryVideoInfo(
+                DocumentaryVideoInfo documentaryVideoInfo = new DocumentaryVideoInfo(
                         id, name, key);
-                documentryVideoInfoList.add(documentryVideoInfo);
+                documentaryVideoInfoList.add(documentaryVideoInfo);
                 cursor.moveToNext();
             }
         }
         cursorClose(cursor);
         closeDB();
-        return documentryVideoInfoList;
+        return documentaryVideoInfoList;
     }
 
 }
