@@ -64,7 +64,13 @@ public class YoutubeDocumentryVideoActivity extends ActionBarActivity implements
     }
 
     private void initializeYouttubeFragment() {
-        youTubePlayerFragment.initialize(API_KEY, this);
+        try {
+            youTubePlayerFragment.initialize(API_KEY, this);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void setTxtVideoName(String videoName) {

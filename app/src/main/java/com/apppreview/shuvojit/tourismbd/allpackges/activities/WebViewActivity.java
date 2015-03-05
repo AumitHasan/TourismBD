@@ -24,7 +24,7 @@ public class WebViewActivity extends ActionBarActivity implements InitializerCli
     private String actionBarName;
     private ProgressDialog progressDialog;
     private ActionBar actionBar;
-    private Toolbar toolbar;
+
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -50,8 +50,6 @@ public class WebViewActivity extends ActionBarActivity implements InitializerCli
         webView = (WebView) findViewById(R.id.webView);
         intent = getIntent();
         url = intent.getStringExtra("URL");
-        toolbar = new Toolbar(WebViewActivity.this);
-        setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBarName = intent.getStringExtra("ACTION_BAR_NAME");
         progressDialog = new ProgressDialog(WebViewActivity.this);

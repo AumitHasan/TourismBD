@@ -18,7 +18,7 @@ import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DirectionApiJsonClient;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapInterface;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.locationsServices.UserLocation;
 import com.apppreview.shuvojit.tourismbd.allpackges.webServices.GoogleMapDirectionJsonAPIWebService;
@@ -41,7 +41,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GoogleMapDirectionActivity extends ActionBarActivity implements
-        GoogleMapInterface, InitializerClient {
+        GoogleMapClient, InitializerClient {
 
     private GoogleMap googleMap;
     private MapFragment mapFragment;

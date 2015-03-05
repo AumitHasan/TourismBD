@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:gravity="center|start"
+            android:gravity="center_horizontal"
             android:padding="7dp"
             android:text="@string/txt_tourism_in_bangladesh"
             android:textAppearance="?android:attr/textAppearanceLarge"

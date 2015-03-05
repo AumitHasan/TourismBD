@@ -28,6 +28,10 @@ import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotImagesResourceInfo
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.popUpWindows.UserChoicePromptPopUpWindow;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 import java.lang.reflect.Field;
 
@@ -44,13 +48,14 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
     private String spotType;
     private String spotName;
     private TourismGuiderDatabase tourismGuiderDatabase;
-    private ImageFlipperGestureDetector imageFlipperGestoreDetector;
+    /*private ImageFlipperGestureDetector imageFlipperGestoreDetector;
     private GestureDetector gestureDetector;
-    private ViewFlipper imageFlipper;
+    private ViewFlipper imageFlipper;*/
     private SpotImagesResourceInfo spotImagesResourceInfo;
     private ActionBar actionBar;
     private MenuItem favouritesMenu;
     public static boolean isSpotNameExist= false;
+    private SliderLayout imageSliderLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +91,9 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
         spotType = latLongInfo.getSpotType();
         tourismGuiderDatabase = TourismGuiderDatabase.
                 getTourismGuiderDatabase(TouristSpotInfoActivity.this);
-        imageFlipper = (ViewFlipper) findViewById(R.id.viewImageFlipper);
+        //imageFlipper = (ViewFlipper) findViewById(R.id.viewImageFlipper);
         spotImagesResourceInfo = new SpotImagesResourceInfo(TouristSpotInfoActivity.this);
+        imageSliderLayout = (SliderLayout) findViewById(R.id.image_slider);
 
     }
 
@@ -95,15 +101,23 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
         int imageResources[] = spotImagesResourceInfo
                 .getSpotImageResources(spotName);
         for (int i = 0; i < imageResources.length; i++) {
-            ImageView spotImageView = new ImageView(getApplicationContext());
+            TextSliderView textSliderView = new TextSliderView(this);
+            textSliderView.image(imageResources[i])
+                    .setScaleType(BaseSliderView.ScaleType.Fit);
+            imageSliderLayout.addSlider(textSliderView);
+            /*ImageView spotImageView = new ImageView(getApplicationContext());
             spotImageView.setLayoutParams(new LayoutParams(
                     LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             spotImageView.setScaleType(ImageView.ScaleType.FIT_XY);
             spotImageView.setImageResource(imageResources[i]);
-            imageFlipper.addView(spotImageView);
+            imageFlipper.addView(spotImageView);*/
         }
+        imageSliderLayout.setPresetTransformer(SliderLayout.Transformer.FlipHorizontal);
+        imageSliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        imageSliderLayout.setCustomAnimation(new DescriptionAnimation());
+        imageSliderLayout.setDuration(4000);
 
-        imageFlipper.setInAnimation(this, android.R.anim.fade_in);
+/*        imageFlipper.setInAnimation(this, android.R.anim.fade_in);
         imageFlipper.setOutAnimation(this, android.R.anim.fade_out);
         imageFlipperGestoreDetector = new ImageFlipperGestureDetector();
         gestureDetector = new GestureDetector(this, imageFlipperGestoreDetector);
@@ -115,7 +129,7 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
                 gestureDetector.onTouchEvent(event);
                 return false;
             }
-        });
+        });*/
 
 		/*
          * imageFlipper.setAutoStart(true); imageFlipper.setFlipInterval(10000);
@@ -230,21 +244,8 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
         }
     }
 
-    private void addToFavourites(String spotName, String spotType) {
-        boolean checked = isExist(spotName, spotType);
-        if (!checked) {
-            Toast.makeText(getApplicationContext(), "Already in favourites",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            long res = tourismGuiderDatabase.insertIntoFavouriteList(spotName, spotType);
-            if (res >= 1) {
-                Toast.makeText(getApplicationContext(), "added to favourites",
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
-    private class ImageFlipperGestureDetector extends
+   /* private class ImageFlipperGestureDetector extends
             GestureDetector.SimpleOnGestureListener {
 
         public ImageFlipperGestureDetector() {
@@ -278,7 +279,7 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
             return false;
         }
 
-    }
+    }*/
 
 }
 

@@ -37,7 +37,6 @@ public class TourismInfoListRecyclerViewAdapter extends
     private String[] allSpotsName;
     private int[] allSpotsImages;
     private ArrayList<DocumentaryVideoInfo> documentaryVideoInfoArrayList;
-    private ArrayList<FavouritesSpotInfo> favouritesSpotInfoArrayList;
     private String adapterType;
 
 
@@ -49,10 +48,7 @@ public class TourismInfoListRecyclerViewAdapter extends
         if (adapterType.equalsIgnoreCase("Tourist Spot Infos")) {
             touristSpotInfoArrayList = (ArrayList<SpotInfo>) infoArrayList;
             initialize();
-        } else if (adapterType.equalsIgnoreCase("Favourites Spot Infos")) {
-            favouritesSpotInfoArrayList = (ArrayList<FavouritesSpotInfo>) infoArrayList;
-            initialize();
-        } else {
+        }  else {
             documentaryVideoInfoArrayList = (ArrayList<DocumentaryVideoInfo>)
                     infoArrayList;
         }
@@ -73,11 +69,6 @@ public class TourismInfoListRecyclerViewAdapter extends
                     viewGroup, false);
             tourismInfoViewHolder = new TourismInfoViewHolder(documentaryInfoView);
             Log.e(getClass().getName(), "Adapter has been attached");
-        } else {
-            View favouritesSpotView = layoutInflater.inflate
-                    (R.layout.favourites_spot_list_view_layout, viewGroup, false);
-            tourismInfoViewHolder = new TourismInfoViewHolder(favouritesSpotView);
-            Log.e(getClass().getName(), "Adapter has been attached");
         }
         return tourismInfoViewHolder;
     }
@@ -88,27 +79,11 @@ public class TourismInfoListRecyclerViewAdapter extends
             setTouristSpotInfoView(tourismInfoViewHolder, position);
         } else if (adapterType.equalsIgnoreCase("Documentary Video Infos")) {
             setDocumentaryInfoView(tourismInfoViewHolder, position);
-        } else {
-            setFavouritesTouristSpotInfoView(tourismInfoViewHolder, position);
         }
 
 
     }
 
-    private void setFavouritesTouristSpotInfoView(TourismInfoViewHolder tourismInfoViewHolder,
-                                                  int position) {
-        final FavouritesSpotInfo favouritesSpotInfo = favouritesSpotInfoArrayList.get(position);
-        tourismInfoViewHolder.txtTouristSpotName.setText(favouritesSpotInfo.getSpotName());
-        tourismInfoViewHolder.touristSpotImageView.setImageResource(
-                getImageResourceID(favouritesSpotInfo.getSpotName()));
-        tourismInfoViewHolder.btnSeeTouristSpot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setSpotActivity(favouritesSpotInfo.getSpotName(),
-                        favouritesSpotInfo.getSpotTypeInfo());
-            }
-        });
-    }
 
     private void setDocumentaryInfoView(TourismInfoViewHolder tourismInfoViewHolder, int position) {
         final DocumentaryVideoInfo documentaryVideoInfo =
@@ -177,12 +152,9 @@ public class TourismInfoListRecyclerViewAdapter extends
     public int getItemCount() {
         if (adapterType.equalsIgnoreCase("Tourist Spot Infos")) {
             return touristSpotInfoArrayList.size();
-        } else if (adapterType.equalsIgnoreCase("Documentary Video Infos")) {
+        } else  {
             return documentaryVideoInfoArrayList.size();
-        } else {
-            return favouritesSpotInfoArrayList.size();
         }
-
     }
 
     @Override
@@ -217,8 +189,7 @@ public class TourismInfoListRecyclerViewAdapter extends
         TextView txtDocumentaryVideoName;
         ImageView documentaryVideoIcon;
         Button btnSeeVideo;
-        Button btnSeeTouristSpot;
-        Button btnDiscardTouristSpot;
+
 
         public TourismInfoViewHolder(View touristSpotView) {
             super(touristSpotView);
@@ -243,15 +214,6 @@ public class TourismInfoListRecyclerViewAdapter extends
                     documentaryVideoIcon = (ImageView) tourismInfoView.
                             findViewById(R.id.img_doc_video);
                     btnSeeVideo = (Button) tourismInfoView.findViewById(R.id.btnSeeVideo);
-                } else {
-                    txtTouristSpotName = (TextView) tourismInfoView.
-                            findViewById(R.id.txt_tourist_spot_name);
-                    touristSpotImageView = (ImageView) tourismInfoView.
-                            findViewById(R.id.ic_tourist_spot);
-                    btnSeeTouristSpot = (Button) tourismInfoView.
-                            findViewById(R.id.btn_see_tourist_spot);
-                    btnDiscardTouristSpot = (Button) tourismInfoView.
-                            findViewById(R.id.btn_discard_tourist_spot);
                 }
             }
         }

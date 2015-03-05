@@ -8,14 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.apppreview.shuvojit.tourismbd.R;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.AdapterInterface;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
-public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter,
-        AdapterInterface {
+public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter
+        {
 
 	private Context context;
 	private View adapterView;
@@ -67,7 +65,7 @@ public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter,
 		return null;
 	}
 
-	@Override
+
 	public void setIcon(String spotName) {
 		int position = 0;
 		for (int i = 0; i < allSpotsName.length; i++) {
@@ -80,7 +78,7 @@ public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter,
 
 	}
 
-	@Override
+
 	public void intializeAdapterView(View adapterView) {
 		spotTitle = (TextView) adapterView
 				.findViewById(R.id.info_window_adapter_spot_title_name);

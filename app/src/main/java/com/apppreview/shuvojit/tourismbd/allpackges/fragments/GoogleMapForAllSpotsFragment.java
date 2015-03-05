@@ -17,7 +17,7 @@ import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindow
 import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapInterface;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,7 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 public class GoogleMapForAllSpotsFragment extends Fragment implements
-        GoogleMapInterface, InitializerClient {
+        GoogleMapClient, InitializerClient {
 
 
     private Context context;
