@@ -9,26 +9,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/image_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            custom:pager_animation="Accordion"
-            custom:auto_cycle="true"
-            custom:indicator_visibility="visible"
-            custom:pager_animation_span="1100" />
+       >
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/image_slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                custom:pager_animation="Accordion"
+                custom:auto_cycle="true"
+                custom:indicator_visibility="visible"
+                custom:pager_animation_span="1100" />
 
 
-        <ViewFlipper
-            android:id="@+id/viewImageFlipper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:autoStart="false"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:overScrollMode="never" />
+
+
+
+
+
+
 
         <LinearLayout
             style="?android:attr/buttonBarStyle"
