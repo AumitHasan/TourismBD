@@ -20,13 +20,12 @@ import android.widget.ListView;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.listViewAdapters.NavDrawerListViewAdapter;
-import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.AboutOurAppFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.FavouritesFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.GoogleMapForAllSpotsFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.HomeFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.TourismInfoListFragment;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
 import java.util.ArrayList;
@@ -97,16 +96,19 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
         fragment = null;
         switch (navDrawerCategory) {
             case "Maps":
-                TourismGuiderDatabase tourismGuiderDatabase = TourismGuiderDatabase.
-                        getTourismGuiderDatabase(MainActivity.this);
-                ArrayList<LatLongInfo> latLongInfoArrayList = tourismGuiderDatabase.
-                        getLatLongInfo();
+                ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoArrayList =
+                        (ArrayList<LatLongInfoOfAllSpotsTable>)
+                        LatLongInfoOfAllSpotsTable.
+                        getAllLatLongInfoOfAllSpotsTableData();
+
                 if (latLongInfoArrayList != null && latLongInfoArrayList.size() > 0) {
+                    Log.e(getClass().getName(), "Not Null");
                     double cameraLatVal = 23.7000;
                     double cameraLngVal = 90.3500;
                     fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
                             cameraLatVal, cameraLngVal);
                 }
+
                 break;
             case "Home":
                 fragment = HomeFragment.getNewInstance();
@@ -128,6 +130,8 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
         drawerLayout.closeDrawers();
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -11,8 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.apppreview.shuvojit.tourismbd.R;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.GoogleMapForAllSpotsFragment;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
 import java.util.ArrayList;
@@ -37,13 +37,14 @@ public class GoogleMapForEachSpotActivity extends ActionBarActivity implements
     public void initialize() {
         actionBar = getSupportActionBar();
         Intent intent = getIntent();
-        LatLongInfo latLongInfo = (LatLongInfo) intent
+        LatLongInfoOfAllSpotsTable latLongInfo= (LatLongInfoOfAllSpotsTable) intent
                 .getSerializableExtra("SpotLatLongInfo");
         actionBar.setTitle(latLongInfo.getSpotName());
-        ArrayList<LatLongInfo> latLongInfoArrayList = new ArrayList<LatLongInfo>();
+        ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoArrayList =
+                new ArrayList<LatLongInfoOfAllSpotsTable>();
         latLongInfoArrayList.add(latLongInfo);
         Fragment fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
-                latLongInfo.getLatitudeVal(), latLongInfo.getLongtitudeVal());
+                latLongInfo.getSpotlatitudefield(), latLongInfo.getSpotLongtitudeField());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().
                 beginTransaction();
         fragmentTransaction.replace(R.id.content_fragment, fragment).commit();

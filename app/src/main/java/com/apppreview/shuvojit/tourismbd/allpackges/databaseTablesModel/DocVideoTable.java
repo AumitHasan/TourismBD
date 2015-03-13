@@ -8,6 +8,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DatabaseClient;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 
 @Table(name = "doc_video")
-public class DocVideoTable extends Model implements DatabaseClient {
+public class DocVideoTable extends Model implements DatabaseClient,Serializable {
 
     @Column(name = "doc_name")
     private String docName;

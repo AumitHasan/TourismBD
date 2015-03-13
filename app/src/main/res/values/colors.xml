@@ -35,6 +35,7 @@
     <color name="buttonTextColor">#2196f3</color>
     <color name="colorAccent">#47B547</color>
     <color name="grey">#A8A8A8</color>
+    <color name="progress_bar_color">#A5DC86</color>
 
 
 

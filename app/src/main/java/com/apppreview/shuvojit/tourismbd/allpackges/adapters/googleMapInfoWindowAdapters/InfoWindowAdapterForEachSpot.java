@@ -3,16 +3,18 @@ package com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindo
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apppreview.shuvojit.tourismbd.R;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.FontClient;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
-public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter
+public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter, FontClient
         {
 
 	private Context context;
@@ -23,9 +25,11 @@ public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter
 	private TextView spotTitle;
 	private ImageView spotIcon;
 	private String[] allSpotsName;
+    private Typeface typeface;
 
 	public InfoWindowAdapterForEachSpot(Context context) {
 		this.context = context;
+        this.typeface = Typeface.createFromAsset(context.getAssets(), UBUNTU_FONT_PATH);
 		initialize();
 	}
 
@@ -51,6 +55,7 @@ public class InfoWindowAdapterForEachSpot implements InfoWindowAdapter
 		intializeAdapterView(adapterView);
 		String spotName = marker.getTitle();
 		spotTitle.setText(spotName);
+        spotTitle.setTypeface(typeface);
 		if (spotName.equals("You are here")) {
 			spotIcon.setImageResource(R.drawable.image_user);
 		} else {

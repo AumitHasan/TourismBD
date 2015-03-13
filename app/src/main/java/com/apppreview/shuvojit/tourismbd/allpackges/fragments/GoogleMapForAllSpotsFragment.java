@@ -14,9 +14,8 @@ import android.widget.Toast;
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.activities.TouristSpotInfoActivity;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
-import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.SpotInfoTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,15 +29,32 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GoogleMapForAllSpotsFragment extends Fragment implements
         GoogleMapClient, InitializerClient {
 
 
+    private OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
+
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+
+            if (getActivity().getClass().getSimpleName().equalsIgnoreCase("MainActivity")) {
+                LatLongInfoOfAllSpotsTable latLongInfo = getLatLngInfo(marker);
+                setSpotActivity(latLongInfo.getSpotName(), latLongInfo.getSpotTypeField());
+
+            } else {
+                Toast.makeText(context, marker.getSnippet(), Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+    };
     private Context context;
     private MapFragment mapFragment;
     private GoogleMap googleMap;
-    private ArrayList<LatLongInfo> latLongInfoList;
+    private List<LatLongInfoOfAllSpotsTable> latLongInfoList;
     private ArrayList<Marker> allMarkers;
     private MarkerOptions markerOptions;
     private View fragmentView;
@@ -46,17 +62,15 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
     private double cameraLatVal;
     private double cameraLngVal;
 
-
-
     public GoogleMapForAllSpotsFragment() {
 
     }
 
     public static GoogleMapForAllSpotsFragment getNewInstance(
-            ArrayList<LatLongInfo> latLongInfoList,
+            ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoList,
             double cameraMoveLatVal,
             double cameraMoveLngVal
-            ) {
+    ) {
         GoogleMapForAllSpotsFragment googleMapForAllSpotsFragment = new
                 GoogleMapForAllSpotsFragment();
         Bundle bundle = new Bundle();
@@ -72,7 +86,7 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            latLongInfoList = (ArrayList<LatLongInfo>) bundle.
+            latLongInfoList = (List<LatLongInfoOfAllSpotsTable>) bundle.
                     getSerializable("Lat long info list");
             cameraLatVal = bundle.getDouble("Camera Move Lat Val");
             cameraLngVal = bundle.getDouble("Camera Move Lng Val");
@@ -90,13 +104,13 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
         googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(
                 context));
         googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
-
+        //googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         return fragmentView;
     }
 
     @Override
     public void initialize() {
-        if(fragmentView != null) {
+        if (fragmentView != null) {
             context = getActivity();
             fragmentManager = getActivity().getFragmentManager();
             mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.googleMap);
@@ -117,7 +131,7 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
     }
 
     private void setAllMarkersOnMap() {
-        LatLongInfo latLongInfo = null;
+        LatLongInfoOfAllSpotsTable latLongInfo = null;
         Marker marker = null;
         allMarkers = new ArrayList<Marker>();
         if (latLongInfoList != null && latLongInfoList.size() > 0) {
@@ -125,12 +139,12 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
                 latLongInfo = latLongInfoList.get(i);
                 markerOptions = new MarkerOptions()
                         .position(
-                                new LatLng(latLongInfo.getLatitudeVal(),
-                                        latLongInfo.getLongtitudeVal()))
+                                new LatLng(latLongInfo.getSpotlatitudefield(),
+                                        latLongInfo.getSpotLongtitudeField()))
                         .title(latLongInfo.getSpotName())
                         .snippet(latLongInfo.getSpotSnippet());
                 marker = googleMap.addMarker(markerOptions);
-                setMarkerIcons(marker, latLongInfo.getSpotType());
+                setMarkerIcons(marker, latLongInfo.getSpotTypeField());
                 allMarkers.add(marker);
             }
         }
@@ -146,9 +160,7 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
             mapFragment = null;
             fragmentManager = null;
             fragmentView = null;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         super.onDestroyView();
@@ -224,8 +236,8 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
 
     }
 
-    private LatLongInfo getLatLngInfo(Marker marker) {
-        LatLongInfo latLongInfo = null;
+    private LatLongInfoOfAllSpotsTable getLatLngInfo(Marker marker) {
+        LatLongInfoOfAllSpotsTable latLongInfo = null;
         for (int i = 0; i <= allMarkers.size(); i++) {
             String spotName = allMarkers.get(i).getTitle();
             if (spotName.equalsIgnoreCase(marker.getTitle())) {
@@ -237,35 +249,16 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
     }
 
     private void setSpotActivity(String spotName, String spotType) {
-        TourismGuiderDatabase tourismGuiderDatabase = TourismGuiderDatabase.
-                getTourismGuiderDatabase(context);
-        SpotInfo spotInfo = tourismGuiderDatabase.getSpotInfo(spotName, spotType);
-        LatLongInfo latLongInfo = tourismGuiderDatabase.getLatLongInfo(spotName, spotType);
+        SpotInfoTable spotInfo = SpotInfoTable.getSpotInfoTableData(spotName, spotType);
+        LatLongInfoOfAllSpotsTable latLongInfo = LatLongInfoOfAllSpotsTable.
+                getLatLongInfoOfSpotTableData(spotName, spotType);
         if (spotInfo != null && latLongInfo != null) {
             Log.d(getClass().getName(), "found");
             Intent intent = new Intent(context, TouristSpotInfoActivity.class);
             intent.putExtra("SpotInfo", spotInfo);
             intent.putExtra("SpotLatLongInfo", latLongInfo);
-            tourismGuiderDatabase.close();
             context.startActivity(intent);
         }
 
     }
-
-    OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
-
-        @Override
-        public void onInfoWindowClick(Marker marker) {
-
-            if (getActivity().getClass().getSimpleName().equalsIgnoreCase("MainActivity")) {
-                LatLongInfo latLongInfo = getLatLngInfo(marker);
-                setSpotActivity(latLongInfo.getSpotName(), latLongInfo.getSpotType());
-
-            } else {
-                Toast.makeText(context, marker.getSnippet(), Toast.LENGTH_LONG).show();
-            }
-
-
-        }
-    };
 }

@@ -14,7 +14,6 @@ public interface DatabaseClient {
     public static final String LATITUDE_FIELD = "spotlatitudefield";
     public static final String LONGTITUDE_FIELD = "spotlongtitudefield";
     public static final String SNIPPET_FIELD = "spotsnippet";
-    public static final String DB_TABLE_NAME_3 = "favourite_lists";
     public static final String DATABASE_NAME = "touristguiderDB";
     public static final int VERSION = 1;
     public static final SQLiteDatabase.CursorFactory CURSOR_FACTORY = null;
@@ -29,12 +28,6 @@ public interface DatabaseClient {
     public static final String DOC_NAME_FIELD = "doc_name";
     public static final String KEY_FIELD = "key";
 
-    public SQLiteDatabase openDB();
 
-    public void uploadDB();
-
-    public boolean dbExist();
-
-    public void copyDB();
 
 }

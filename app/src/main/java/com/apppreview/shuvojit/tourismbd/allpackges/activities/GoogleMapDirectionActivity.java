@@ -1,7 +1,6 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DirectionApiJsonClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
@@ -40,13 +39,15 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class GoogleMapDirectionActivity extends ActionBarActivity implements
         GoogleMapClient, InitializerClient {
 
     private GoogleMap googleMap;
     private MapFragment mapFragment;
     private Intent intent;
-    private LatLongInfo latlongInfo;
+    private LatLongInfoOfAllSpotsTable latlongInfo;
     private String durationText, distanceText, startAddress, endAddress,
             copyRight;
     private Timer timer;
@@ -57,19 +58,17 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
     private Marker userMarker;
     private double userLatitudeVal;
     private double userLongitudeVal;
+    private OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.google_map_layout);
-        initialize();
-        //getOverFlowMenu();
-        googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(this));
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
-    }
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            if (marker.getTitle().equals(latlongInfo.getSpotName())) {
+                Toast.makeText(getApplicationContext(),
+                        marker.getTitle() + "\n" + marker.getSnippet(),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     /*private void getOverFlowMenu() {
         try {
@@ -87,22 +86,36 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
     }*/
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.google_map_layout);
+        initialize();
+        //getOverFlowMenu();
+        googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(this));
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
+        //googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+    }
+
+    @Override
     public void initialize() {
         actionBar = getSupportActionBar();
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(
                 R.id.googleMap);
         googleMap = this.mapFragment.getMap();
         intent = getIntent();
-        latlongInfo = (LatLongInfo) this.intent
+        latlongInfo = (LatLongInfoOfAllSpotsTable) this.intent
                 .getSerializableExtra("SpotLatLongInfo");
         MarkerOptions spotMarkerOptions = new MarkerOptions()
-                .position(new LatLng(latlongInfo.getLatitudeVal(), latlongInfo.getLongtitudeVal()))
+                .position(new LatLng(latlongInfo.getSpotlatitudefield(),
+                        latlongInfo.getSpotLongtitudeField()))
                 .draggable(false)
                 .title(latlongInfo.getSpotName())
                 .snippet(latlongInfo.getSpotSnippet())
                 .visible(true);
         Marker marker = googleMap.addMarker(spotMarkerOptions);
-        setMarkerIcons(marker, latlongInfo.getSpotType());
+        setMarkerIcons(marker, latlongInfo.getSpotTypeField());
         handler = new Handler();
         timer = new Timer();
         setGoogleMapCameraMove();
@@ -131,7 +144,6 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         new GoogleMapDirectionApiAsyncTask().execute();
         setTimer();
     }
-
 
     private void changeUserPosition() {
         userLatitudeVal = userLocation.getUserLatitude();
@@ -188,7 +200,7 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
                         public void run() {
 
                             reloadDirection();
-                            Log.e(getClass().getName()," timer task is running");
+                            Log.e(getClass().getName(), " timer task is running");
                         }
                     });
                 }
@@ -199,11 +211,10 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
     }
 
-   private void reloadDirection()
-   {
-       changeUserPosition();
-       new GoogleMapDirectionApiAsyncTask().execute();
-   }
+    private void reloadDirection() {
+        changeUserPosition();
+        new GoogleMapDirectionApiAsyncTask().execute();
+    }
 
     private void stopTimer() {
         if (timer != null && handler != null && timerTask != null) {
@@ -214,7 +225,6 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
             handler = null;
         }
     }
-
 
     private void showToastMessage() {
         if (durationText != null && distanceText != null && startAddress != null &&
@@ -238,7 +248,6 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         Log.e(getClass().getName(), "Message is showing");
 
     }
-
 
     @Override
     public void setMarkerIcons(Marker marker, String spotType) {
@@ -310,22 +319,10 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
     }
 
-    private OnInfoWindowClickListener infoWindowClickListener = new OnInfoWindowClickListener() {
-
-        @Override
-        public void onInfoWindowClick(Marker marker) {
-            if (marker.getTitle().equals(latlongInfo.getSpotName())) {
-                Toast.makeText(getApplicationContext(),
-                        marker.getTitle() + "\n" + marker.getSnippet(),
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-    };
-
     private class GoogleMapDirectionApiAsyncTask extends AsyncTask<Void, Void, Boolean>
             implements DirectionApiJsonClient {
 
-        private ProgressDialog progressDialog;
+        private SweetAlertDialog progressDialog;
         private String jsonData;
         private String userLatitude;
         private String userLongitude;
@@ -346,18 +343,20 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
         private void setProgressDialog() {
 
-            progressDialog = new ProgressDialog(GoogleMapDirectionActivity.this);
-            progressDialog.setMessage("Loading...");
-            progressDialog.setCancelable(false);
+            progressDialog = new SweetAlertDialog(GoogleMapDirectionActivity.this,
+                    SweetAlertDialog.PROGRESS_TYPE);
+            progressDialog.setTitleText("Loading...");
+            progressDialog.setCancelable(true);
             progressDialog.show();
             Log.e(getClass().getName(), "Progress Dialog is Showing");
+
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             if (latlongInfo != null && userLocation != null) {
-                touristSpotLatitude = String.valueOf(latlongInfo.getLatitudeVal());
-                touristSpotLongitude = String.valueOf(latlongInfo.getLongtitudeVal());
+                touristSpotLatitude = String.valueOf(latlongInfo.getSpotlatitudefield());
+                touristSpotLongitude = String.valueOf(latlongInfo.getSpotLongtitudeField());
                 userLatitude = String.valueOf(userLocation.getUserLatitude());
                 userLongitude = String.valueOf(userLocation.getUserLongtitude());
                 String googleMapDirectionWebUrl = DIRECTION_API_WEB_ADDRESS_PART_1 + userLatitude +

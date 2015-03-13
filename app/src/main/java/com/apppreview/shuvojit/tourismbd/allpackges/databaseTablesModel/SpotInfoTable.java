@@ -8,13 +8,15 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DatabaseClient;
 
+import java.io.Serializable;
+
 /**
  * Created by shuvojit on 3/8/15.
  */
 
 @Table(name = "spotinfo")
 
-public class SpotInfoTable extends Model implements DatabaseClient {
+public class SpotInfoTable extends Model implements DatabaseClient, Serializable {
 
     @Column(name = "spotname")
     private String spotName;

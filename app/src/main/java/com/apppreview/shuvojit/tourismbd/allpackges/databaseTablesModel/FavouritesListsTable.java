@@ -34,7 +34,8 @@ public class FavouritesListsTable extends Model implements DatabaseClient {
     }
 
     public static List<FavouritesListsTable> getfavouritesListsTableModelDataList() {
-        List<FavouritesListsTable> favouritesListsTableDataList = new Select()
+        List<FavouritesListsTable> favouritesListsTableDataList = null;
+        favouritesListsTableDataList = new Select()
                 .from(FavouritesListsTable.class)
                 .orderBy(SPOT_NAME_FIELD + " ASC")
                 .execute();

@@ -1,6 +1,7 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.adapters.listViewAdapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,16 +9,19 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.apppreview.shuvojit.tourismbd.R;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.FontClient;
 
 
-public class NavDrawerListViewAdapter extends BaseAdapter {
+public class NavDrawerListViewAdapter extends BaseAdapter implements FontClient {
 
 	private Context context;
 	private String listItemsName[];
 	private TextView textView;
+    private Typeface typeface;
 
 	public NavDrawerListViewAdapter(Context context) {
 		this.context = context;
+        this.typeface = Typeface.createFromAsset(context.getAssets(), UBUNTU_FONT_PATH );
 		intialize();
 
 	}
@@ -61,6 +65,7 @@ public class NavDrawerListViewAdapter extends BaseAdapter {
 		}
 		this.textView = (TextView) adapterView.findViewById(R.id.item_name);
 		textView.setText(listItemsName[position]);
+        textView.setTypeface(typeface);
 		return adapterView;
 	}
 

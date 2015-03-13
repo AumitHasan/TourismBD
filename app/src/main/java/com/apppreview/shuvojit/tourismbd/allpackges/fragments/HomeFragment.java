@@ -3,6 +3,7 @@ package com.apppreview.shuvojit.tourismbd.allpackges.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,18 +11,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.activities.WebViewActivity;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.FontClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
 public class HomeFragment extends Fragment implements OnClickListener,
-        InitializerClient {
+        InitializerClient, FontClient {
 
     private Context context;
     private Button btnGoTourismBangladesh, btnGoVisitBan, btnGoPorjatonCorp;
     private Intent intent;
     private View fragmentView;
+    private Typeface typeface;
 
     public HomeFragment() {
 
@@ -34,6 +38,8 @@ public class HomeFragment extends Fragment implements OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        context = getActivity();
+        typeface = Typeface.createFromAsset(context.getAssets(), UBUNTU_FONT_PATH);
         fragmentView = inflater.inflate(R.layout.home_fragment_layout,
                 container, false);
         initialize();
@@ -46,13 +52,26 @@ public class HomeFragment extends Fragment implements OnClickListener,
     @Override
     public void initialize() {
         if (fragmentView != null) {
-            context = getActivity();
+            TextView txtTourismGuiderOFBangladesh = (TextView) fragmentView.
+                    findViewById(R.id.txt_tourism_guider_of_bangladesh);
+            txtTourismGuiderOFBangladesh.setTypeface(typeface);
+            TextView txtIntro = (TextView) fragmentView.findViewById(R.id.txt_intro);
+            txtIntro.setTypeface(typeface);
+            TextView txtDiscrip = (TextView) fragmentView.findViewById(R.id.txt_discrip);
+            txtDiscrip.setTypeface(typeface);
+            TextView txtDiscrip2 = (TextView) fragmentView.findViewById(R.id.txt_discrip1);
+            txtDiscrip2.setTypeface(typeface);
+            TextView txtWebInfo = (TextView) fragmentView.findViewById(R.id.txt_web_info);
+            txtWebInfo.setTypeface(typeface);
             btnGoTourismBangladesh = (Button) fragmentView
                     .findViewById(R.id.btn_tourism_board);
+            btnGoTourismBangladesh.setTypeface(typeface);
             btnGoVisitBan = (Button) fragmentView
                     .findViewById(R.id.btn_visit_ban);
+            btnGoVisitBan.setTypeface(typeface);
             btnGoPorjatonCorp = (Button) fragmentView
                     .findViewById(R.id.btn_parjaton_corp);
+            btnGoPorjatonCorp.setTypeface(typeface);
         }
 
     }

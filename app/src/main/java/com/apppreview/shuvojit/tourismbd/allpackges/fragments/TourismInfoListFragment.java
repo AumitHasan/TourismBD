@@ -5,31 +5,32 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.recyclerViewAdapter.TourismInfoListRecyclerViewAdapter;
-import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.DocumentaryVideoInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.DocVideoTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import jp.wasabeef.recyclerview.animators.OvershootInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
 
 
 public class TourismInfoListFragment extends Fragment implements InitializerClient {
 
-    private TourismGuiderDatabase tourismGuiderDatabase;
     private View fragmentView;
     private Context context;
     private String infoType;
-    private ArrayList<SpotInfo> spotInfoList;
     private RecyclerView recyclerView;
     private TourismInfoListRecyclerViewAdapter tourismInfoListRecyclerViewAdapter;
-    private ArrayList<DocumentaryVideoInfo> documentaryVideoInfoArrayList;
+    private List<DocVideoTable> docVideoTableDataList;
+    private List<LatLongInfoOfAllSpotsTable> spotInfoList;
 
     public TourismInfoListFragment() {
 
@@ -67,21 +68,24 @@ public class TourismInfoListFragment extends Fragment implements InitializerClie
         if (fragmentView != null) {
             context = getActivity();
             recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recyclerView);
-            tourismGuiderDatabase = TourismGuiderDatabase.getTourismGuiderDatabase(context);
             if (infoType.equalsIgnoreCase("Documentry Videos")) {
-                documentaryVideoInfoArrayList = tourismGuiderDatabase.getDocVideoInfo();
-                sortDocumentaryVideoList();
-                tourismInfoListRecyclerViewAdapter = new TourismInfoListRecyclerViewAdapter(context,
-                        documentaryVideoInfoArrayList, "Documentary Video Infos");
-            } else {
-                spotInfoList = tourismGuiderDatabase.getSpotNameList(infoType);
-                sortSpotNameList();
-                tourismInfoListRecyclerViewAdapter = new TourismInfoListRecyclerViewAdapter(context,
-                        spotInfoList, "Tourist Spot Infos");
+                docVideoTableDataList = DocVideoTable.getAllDocVideoTableModelDataList();
+                tourismInfoListRecyclerViewAdapter = new
+                        TourismInfoListRecyclerViewAdapter(context,
+                        docVideoTableDataList, "Documentary Video Infos");
+                recyclerView.setItemAnimator(new SlideInUpAnimator());
 
+            } else {
+                spotInfoList = LatLongInfoOfAllSpotsTable.
+                        getAllLatLongInfoOfAllSpotsTableData(infoType);
+                tourismInfoListRecyclerViewAdapter = new
+                        TourismInfoListRecyclerViewAdapter(context,
+                        spotInfoList, "Tourist Spot Infos");
+                recyclerView.setItemAnimator(new OvershootInLeftAnimator());
             }
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setAdapter(tourismInfoListRecyclerViewAdapter);
+            recyclerView.setAdapter(new AlphaInAnimationAdapter(
+                    tourismInfoListRecyclerViewAdapter));
+
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);
@@ -89,77 +93,73 @@ public class TourismInfoListFragment extends Fragment implements InitializerClie
         }
     }
 
-        private void sortDocumentaryVideoList() {
-            DocumentaryVideoInfo documentaryVideoInfoForPresentIndex = null;
-            DocumentaryVideoInfo documentaryVideoInfoForForwardIndex = null;
-            String documentryVideoNamePresentIndex = null;
-            String documentryVideoNameForwardIndex = null;
-            int k = documentaryVideoInfoArrayList.size() - 1;
-            while (k != 0) {
-                int t = 0;
-                for (int i = 0; i <= k - 1; i++) {
-                    documentaryVideoInfoForPresentIndex = documentaryVideoInfoArrayList
-                            .get(i);
-                    documentaryVideoInfoForForwardIndex = documentaryVideoInfoArrayList
-                            .get(i + 1);
-                    documentryVideoNamePresentIndex = documentaryVideoInfoForPresentIndex
-                            .getDocName();
 
-                    documentryVideoNameForwardIndex = documentaryVideoInfoForForwardIndex
-                            .getDocName();
-                    int j = 0;
-                    int l = 0;
-                    boolean flag = false;
+    private void sortDocumentaryVideoList() {
+        DocVideoTable documentaryVideoInfoForPresentIndex = null;
+        DocVideoTable documentaryVideoInfoForForwardIndex = null;
+        String documentaryVideoNamePresentIndex;
+        String documentaryVideoNameForwardIndex;
+        int k = docVideoTableDataList.size() - 1;
+        while (k != 0) {
+            int t = 0;
+            for (int i = 0; i <= k - 1; i++) {
+                documentaryVideoInfoForPresentIndex = docVideoTableDataList
+                        .get(i);
+                documentaryVideoInfoForForwardIndex = docVideoTableDataList
+                        .get(i + 1);
+                documentaryVideoNamePresentIndex = documentaryVideoInfoForPresentIndex
+                        .getDocName();
 
-                    while (j < documentryVideoNamePresentIndex.length()
-                            && l < documentryVideoNameForwardIndex.length()) {
+                documentaryVideoNameForwardIndex = documentaryVideoInfoForForwardIndex
+                        .getDocName();
+                int j = 0;
+                int l = 0;
+                boolean flag = false;
 
-                        if (documentryVideoNamePresentIndex.charAt(j) > documentryVideoNameForwardIndex
-                                .charAt(l)) {
-                            flag = true;
-                            break;
-                        } else if (documentryVideoNamePresentIndex.charAt(j) < documentryVideoNameForwardIndex
-                                .charAt(l)) {
-                            flag = false;
-                            break;
-                        }
-                        j++;
-                        l++;
+                while (j < documentaryVideoNamePresentIndex.length()
+                        && l < documentaryVideoNameForwardIndex.length()) {
+
+                    if (documentaryVideoNamePresentIndex.charAt(j) >
+                            documentaryVideoNameForwardIndex
+                            .charAt(l)) {
+                        flag = true;
+                        break;
+                    } else if (documentaryVideoNamePresentIndex.charAt(j) <
+                            documentaryVideoNameForwardIndex.charAt(l)) {
+                        flag = false;
+                        break;
                     }
-
-                    if (flag) {
-                        documentaryVideoInfoArrayList.set(i,
-                                documentaryVideoInfoForForwardIndex);
-                        documentaryVideoInfoArrayList.set(i + 1,
-                                documentaryVideoInfoForPresentIndex);
-                        t = i;
-                    }
-
+                    j++;
+                    l++;
                 }
-                k = t;
+
+                if (flag) {
+                    docVideoTableDataList.set(i,
+                            documentaryVideoInfoForForwardIndex);
+                    docVideoTableDataList.set(i + 1,
+                            documentaryVideoInfoForPresentIndex);
+                    t = i;
+                }
 
             }
+            k = t;
 
         }
 
-
-
+    }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (tourismGuiderDatabase != null) {
-            tourismGuiderDatabase.close();
-            Log.e(getClass().getName(), "Database close");
-        }
+
 
     }
 
     private void sortSpotNameList() {
 
-        SpotInfo spotInfoForPresentIndex = null;
-        SpotInfo spotInfoForForwardIndex = null;
+        LatLongInfoOfAllSpotsTable spotInfoForPresentIndex = null;
+        LatLongInfoOfAllSpotsTable spotInfoForForwardIndex = null;
         String spotNamePresentIndex = null;
         String spotNameForwardIndex = null;
         int k = spotInfoList.size() - 1;

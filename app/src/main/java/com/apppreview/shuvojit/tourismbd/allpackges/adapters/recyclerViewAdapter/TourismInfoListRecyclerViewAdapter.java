@@ -3,6 +3,7 @@ package com.apppreview.shuvojit.tourismbd.allpackges.adapters.recyclerViewAdapte
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,41 +16,42 @@ import android.widget.TextView;
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.activities.TouristSpotInfoActivity;
 import com.apppreview.shuvojit.tourismbd.allpackges.activities.YoutubeDocumentryVideoActivity;
-import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.DocumentaryVideoInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.FavouritesSpotInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.DocVideoTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.SpotInfoTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.FontClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shuvojit on 3/2/15.
  */
 public class TourismInfoListRecyclerViewAdapter extends
         RecyclerView.Adapter<TourismInfoListRecyclerViewAdapter.TourismInfoViewHolder>
-        implements InitializerClient {
+        implements InitializerClient, FontClient {
 
     private Context context;
     private LayoutInflater layoutInflater;
-    private ArrayList<SpotInfo> touristSpotInfoArrayList;
+    private List<LatLongInfoOfAllSpotsTable> touristSpotInfoArrayList;
     private String[] allSpotsName;
     private int[] allSpotsImages;
-    private ArrayList<DocumentaryVideoInfo> documentaryVideoInfoArrayList;
+    private List<DocVideoTable> documentaryVideoInfoArrayList;
     private String adapterType;
+    private Typeface fontTypeFace;
 
 
     public TourismInfoListRecyclerViewAdapter(Context context,
-                                              ArrayList infoArrayList,
+                                              List infoArrayList,
                                               String adapterType) {
         this.context = context;
         this.adapterType = adapterType;
+        this.fontTypeFace = Typeface.createFromAsset(context.getAssets(), UBUNTU_FONT_PATH);
         if (adapterType.equalsIgnoreCase("Tourist Spot Infos")) {
-            touristSpotInfoArrayList = (ArrayList<SpotInfo>) infoArrayList;
+            touristSpotInfoArrayList = (List<LatLongInfoOfAllSpotsTable>) infoArrayList;
             initialize();
-        }  else {
-            documentaryVideoInfoArrayList = (ArrayList<DocumentaryVideoInfo>)
+        } else {
+            documentaryVideoInfoArrayList = (List<DocVideoTable>)
                     infoArrayList;
         }
         layoutInflater = LayoutInflater.from(context);
@@ -86,10 +88,12 @@ public class TourismInfoListRecyclerViewAdapter extends
 
 
     private void setDocumentaryInfoView(TourismInfoViewHolder tourismInfoViewHolder, int position) {
-        final DocumentaryVideoInfo documentaryVideoInfo =
+        final DocVideoTable documentaryVideoInfo =
                 documentaryVideoInfoArrayList.get(position);
         tourismInfoViewHolder.txtDocumentaryVideoName.setText(documentaryVideoInfo.getDocName());
+        tourismInfoViewHolder.txtDocumentaryVideoName.setTypeface(fontTypeFace);
         tourismInfoViewHolder.documentaryVideoIcon.setImageResource(R.drawable.ic_youtube_video);
+        tourismInfoViewHolder.btnSeeVideo.setTypeface(fontTypeFace);
         tourismInfoViewHolder.btnSeeVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,30 +107,32 @@ public class TourismInfoListRecyclerViewAdapter extends
     }
 
     private void setTouristSpotInfoView(TourismInfoViewHolder tourismInfoViewHolder, int position) {
-        final SpotInfo spotInfo = touristSpotInfoArrayList.get(position);
+        final LatLongInfoOfAllSpotsTable spotInfo = touristSpotInfoArrayList.get(position);
         tourismInfoViewHolder.txtTouristSpotName.setText(spotInfo.getSpotName());
+        tourismInfoViewHolder.txtTouristSpotName.setTypeface(fontTypeFace);
         tourismInfoViewHolder.txtTouristSnippet.setText(spotInfo.getSpotSnippet());
+        tourismInfoViewHolder.txtTouristSnippet.setTypeface(fontTypeFace);
         tourismInfoViewHolder.touristSpotImageView.setImageResource
                 (getImageResourceID(spotInfo.getSpotName()));
+        tourismInfoViewHolder.btnLearnMore.setTypeface(fontTypeFace);
         tourismInfoViewHolder.btnLearnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSpotActivity(spotInfo.getSpotName(), spotInfo.getSpotTypeInfo());
+                setSpotActivity(spotInfo.getSpotName(), spotInfo.getSpotTypeField());
             }
         });
     }
 
     private void setSpotActivity(String spotName, String spotType) {
-        TourismGuiderDatabase tourismGuiderDatabase = TourismGuiderDatabase.
-                getTourismGuiderDatabase(context);
-        SpotInfo spotInfo = tourismGuiderDatabase.getSpotInfo(spotName, spotType);
-        LatLongInfo latLongInfo = tourismGuiderDatabase.getLatLongInfo(spotName, spotType);
+
+        SpotInfoTable spotInfo = SpotInfoTable.getSpotInfoTableData(spotName, spotType);
+        LatLongInfoOfAllSpotsTable latLongInfo = LatLongInfoOfAllSpotsTable.
+                getLatLongInfoOfSpotTableData(spotName, spotType);
         if (spotInfo != null && latLongInfo != null) {
             Log.d(getClass().getName(), "found");
             Intent intent = new Intent(context, TouristSpotInfoActivity.class);
             intent.putExtra("SpotInfo", spotInfo);
             intent.putExtra("SpotLatLongInfo", latLongInfo);
-            tourismGuiderDatabase.close();
             context.startActivity(intent);
         }
 
@@ -152,7 +158,7 @@ public class TourismInfoListRecyclerViewAdapter extends
     public int getItemCount() {
         if (adapterType.equalsIgnoreCase("Tourist Spot Infos")) {
             return touristSpotInfoArrayList.size();
-        } else  {
+        } else {
             return documentaryVideoInfoArrayList.size();
         }
     }

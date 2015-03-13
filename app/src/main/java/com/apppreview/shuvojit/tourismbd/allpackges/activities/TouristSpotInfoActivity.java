@@ -1,61 +1,52 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.internal.view.menu.MenuWrapperFactory;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 import com.apppreview.shuvojit.tourismbd.R;
-import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.LatLongInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.FavouritesListsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.SpotInfoTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotImagesResourceInfo;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.SpotInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.FontClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
-import com.apppreview.shuvojit.tourismbd.allpackges.popUpWindows.UserChoicePromptPopUpWindow;
+import com.apppreview.shuvojit.tourismbd.allpackges.popUpWindows.progressDialogs.UserChoicePromptPopUpWindow;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
-import java.lang.reflect.Field;
-
 
 public class TouristSpotInfoActivity extends ActionBarActivity implements OnClickListener,
-        InitializerClient {
+        InitializerClient, FontClient{
 
+    public static boolean isSpotNameExist = false;
     private TextView txtSpotLocation, txtSpotDiscrip, txtSpotFamousThings,
             txtSpotHotels;
     private Button btnMap, btnDirection;
     private Intent intent;
-    private SpotInfo spotInfo;
-    private LatLongInfo latLongInfo;
+    private SpotInfoTable spotInfo;
+    private LatLongInfoOfAllSpotsTable latLongInfo;
     private String spotType;
     private String spotName;
-    private TourismGuiderDatabase tourismGuiderDatabase;
     /*private ImageFlipperGestureDetector imageFlipperGestoreDetector;
     private GestureDetector gestureDetector;
     private ViewFlipper imageFlipper;*/
     private SpotImagesResourceInfo spotImagesResourceInfo;
     private ActionBar actionBar;
     private MenuItem favouritesMenu;
-    public static boolean isSpotNameExist= false;
     private SliderLayout imageSliderLayout;
+    private Typeface fontTypeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,29 +59,41 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
         //getOverFlowMenu();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Toast.makeText(getApplicationContext(),
-                "Swipe image to see more images", Toast.LENGTH_LONG).show();
+
     }
 
     @Override
     public void initialize() {
         actionBar = getSupportActionBar();
+        fontTypeface = Typeface.createFromAsset(getAssets(), UBUNTU_FONT_PATH );
+        TextView labelSpotlocation = (TextView) findViewById(R.id.label_location);
+        labelSpotlocation.setTypeface(fontTypeface);
+        TextView labelDiscrip = (TextView) findViewById(R.id.label_discription);
+        labelDiscrip.setTypeface(fontTypeface);
+        TextView labelFamousThings = (TextView) findViewById(R.id.label_famous_things);
+        labelFamousThings.setTypeface(fontTypeface);
+        TextView labelSpotHotels = (TextView) findViewById(R.id.label_hotels);
+        labelSpotHotels.setTypeface(fontTypeface);
         txtSpotLocation = (TextView) findViewById(R.id.txt_spot_location);
+        txtSpotLocation.setTypeface(fontTypeface);
         txtSpotDiscrip = (TextView) findViewById(R.id.txt_spot_discrip);
+        txtSpotDiscrip.setTypeface(fontTypeface);
         txtSpotFamousThings = (TextView) findViewById(R.id.txt_spot_famous_things);
+        txtSpotFamousThings.setTypeface(fontTypeface);
         txtSpotHotels = (TextView) findViewById(R.id.txt_spot_hotels);
+        txtSpotHotels.setTypeface(fontTypeface);
         btnMap = (Button) findViewById(R.id.btn_map);
+        btnMap.setTypeface(fontTypeface);
         btnDirection = (Button) findViewById(R.id.btn_direction);
+        btnDirection.setTypeface(fontTypeface);
         btnMap.setOnClickListener(this);
         btnDirection.setOnClickListener(this);
         intent = getIntent();
-        spotInfo = (SpotInfo) intent.getSerializableExtra("SpotInfo");
-        latLongInfo = (LatLongInfo) intent
+        spotInfo = (SpotInfoTable) intent.getSerializableExtra("SpotInfo");
+        latLongInfo = (LatLongInfoOfAllSpotsTable) intent
                 .getSerializableExtra("SpotLatLongInfo");
         spotName = latLongInfo.getSpotName();
-        spotType = latLongInfo.getSpotType();
-        tourismGuiderDatabase = TourismGuiderDatabase.
-                getTourismGuiderDatabase(TouristSpotInfoActivity.this);
+        spotType = latLongInfo.getSpotTypeField();
         //imageFlipper = (ViewFlipper) findViewById(R.id.viewImageFlipper);
         spotImagesResourceInfo = new SpotImagesResourceInfo(TouristSpotInfoActivity.this);
         imageSliderLayout = (SliderLayout) findViewById(R.id.image_slider);
@@ -139,10 +142,10 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
 
     private void setAllInfoForSpot() {
         setTitle(spotInfo.getSpotName());
-        txtSpotDiscrip.setText(spotInfo.getDiscripInfo().trim());
-        txtSpotLocation.setText(spotInfo.getLocationInfo().trim());
+        txtSpotDiscrip.setText(spotInfo.getDiscription().trim());
+        txtSpotLocation.setText(spotInfo.getLocation().trim());
         txtSpotHotels.setText(spotInfo.getHotelsInfo().trim());
-        txtSpotFamousThings.setText(spotInfo.getFamousInfo().trim());
+        txtSpotFamousThings.setText(spotInfo.getFamousSpots().trim());
     }
 
     @Override
@@ -162,8 +165,7 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
         Menu mainMenu = menu;
         if (mainMenu != null) {
             favouritesMenu = mainMenu.findItem(R.id.add_favourites);
-            if(isSpotNameExist)
-            {
+            if (isSpotNameExist) {
                 favouritesMenu.setIcon(R.drawable.ic_action_favorite);
             }
         }
@@ -194,23 +196,27 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
                 finish();
                 break;
             case R.id.add_favourites:
-                View parentView = getLayoutInflater().inflate
-                        (R.layout.tourist_spot_info_activity_layout, null);
-                UserChoicePromptPopUpWindow userChoicePromptPopUpWindow = null;
-                if(!isSpotNameExist)
-                {
-                    userChoicePromptPopUpWindow = new
-                            UserChoicePromptPopUpWindow
-                            (TouristSpotInfoActivity.this, "Insert Data", favouritesMenu);
+                if (favouritesMenu != null) {
+                    if (!isSpotNameExist) {
+                        UserChoicePromptPopUpWindow.
+                                showInsertTouristSpotIntoFavouritesListProgressDialog
+                                        (favouritesMenu, TouristSpotInfoActivity.this,
+                                                spotName, spotType);
+                    } else {
+                        UserChoicePromptPopUpWindow.
+                                showDeleteTouristSpotFromFavouritesListProgressDialog
+                                        (favouritesMenu, TouristSpotInfoActivity.this,
+                                                spotName, spotType);
+                    }
                 }
-                else
+                /*else
                 {
                     userChoicePromptPopUpWindow = new
                             UserChoicePromptPopUpWindow
                             (TouristSpotInfoActivity.this, "Delete Data", favouritesMenu);
                 }
                 userChoicePromptPopUpWindow.setPopUpWindow();
-                userChoicePromptPopUpWindow.showPopUpWindow(parentView, spotType, spotName);
+                userChoicePromptPopUpWindow.showPopUpWindow(parentView, spotType, spotName);*/
                 break;
         }
         return true;
@@ -236,12 +242,7 @@ public class TouristSpotInfoActivity extends ActionBarActivity implements OnClic
     }
 
     private boolean isExist(String spotName, String spotType) {
-        int count = tourismGuiderDatabase.getNumOfFavouriteList(spotName, spotType);
-        if (count == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return FavouritesListsTable.isFavouriteSpotNameExist(spotName, spotType);
     }
 
 

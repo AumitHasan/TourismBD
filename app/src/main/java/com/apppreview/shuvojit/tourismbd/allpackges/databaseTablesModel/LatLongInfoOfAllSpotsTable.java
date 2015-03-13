@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DatabaseClient;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 
 @Table(name = "latlonginfoofallspots")
-public class LatLongInfoOfAllSpotsTable extends Model implements DatabaseClient {
+public class LatLongInfoOfAllSpotsTable extends Model implements DatabaseClient, Serializable {
 
     @Column(name = "spotname")
     private String spotName;

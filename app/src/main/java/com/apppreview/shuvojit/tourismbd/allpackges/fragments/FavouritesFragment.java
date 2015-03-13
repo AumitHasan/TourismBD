@@ -13,21 +13,20 @@ import android.widget.Toast;
 
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.listViewAdapters.FavouritesSpotListViewAdapter;
-import com.apppreview.shuvojit.tourismbd.allpackges.databases.TourismGuiderDatabase;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.FavouritesSpotInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.FavouritesListsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FavouritesFragment extends Fragment implements
         InitializerClient {
 
     private static Context context;
-    private static int onResumeCallCount = 0;
-    private TourismGuiderDatabase tourismGuiderDatabase;
     private View fragmentView;
-    private ArrayList<FavouritesSpotInfo> favouritesSpotInfoArrayList;
+    private List<FavouritesListsTable> favouritesSpotInfoArrayList;
     private ListView listView;
     private FavouritesSpotListViewAdapter favouritesSpotListViewAdapter;
     private int arrayListSize = 0;
@@ -42,11 +41,7 @@ public class FavouritesFragment extends Fragment implements
         return new FavouritesFragment();
     }
 
-    public static View getParentView() {
-        LayoutInflater layoutInflater = (LayoutInflater) context.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return layoutInflater.inflate(R.layout.favourites_fragment_layout, null);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,10 +58,9 @@ public class FavouritesFragment extends Fragment implements
     public void initialize() {
         context = getActivity();
         listView = (ListView) fragmentView.findViewById(R.id.favourites_list_view);
-        tourismGuiderDatabase = TourismGuiderDatabase.getTourismGuiderDatabase(context);
-        favouritesSpotInfoArrayList = tourismGuiderDatabase.getFavouritesSpotInfoList();
+        favouritesSpotInfoArrayList = FavouritesListsTable.getfavouritesListsTableModelDataList();
         if (favouritesSpotInfoArrayList != null) {
-            sortFavouriteSpotNameList();
+            //sortFavouriteSpotNameList();
             arrayListSize = favouritesSpotInfoArrayList.size();
             favouritesSpotListViewAdapter = new FavouritesSpotListViewAdapter(context,
                     favouritesSpotInfoArrayList);
@@ -77,9 +71,9 @@ public class FavouritesFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        ArrayList<FavouritesSpotInfo> newfavouritesSpotInfos = tourismGuiderDatabase.
-                getFavouritesSpotInfoList();
-
+        List<FavouritesListsTable> newfavouritesSpotInfos = FavouritesListsTable.
+                getfavouritesListsTableModelDataList();
+        Log.e(getClass().getName(), newfavouritesSpotInfos.size()+"");
         if (newfavouritesSpotInfos != null && newfavouritesSpotInfos.size() > 0 &&
                 newfavouritesSpotInfos.size() != arrayListSize) {
             Log.e(getClass().getName(), "new favourites list has been found");
@@ -88,7 +82,7 @@ public class FavouritesFragment extends Fragment implements
             favouritesSpotListViewAdapter = new FavouritesSpotListViewAdapter(context,
                     favouritesSpotInfoArrayList);
             listView.setAdapter(favouritesSpotListViewAdapter);
-        } else if (newfavouritesSpotInfos == null) {
+        } else if (newfavouritesSpotInfos != null && newfavouritesSpotInfos.size() == 0) {
             if (favouritesSpotListViewAdapter != null) {
                 favouritesSpotInfoArrayList.clear();
                 favouritesSpotListViewAdapter.notifyListView();
@@ -98,22 +92,19 @@ public class FavouritesFragment extends Fragment implements
                     Toast.LENGTH_LONG).show();
             Log.e(getClass().getName(), "No list item is exist");
         }
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (tourismGuiderDatabase != null) {
-            tourismGuiderDatabase.close();
-            Log.e(getClass().getName(), "Database close");
-        }
+
 
     }
 
+
     private void sortFavouriteSpotNameList() {
-        FavouritesSpotInfo favouritesSpotInfoForPresentIndex = null;
-        FavouritesSpotInfo favouritesSpotInfoForForwardIndex = null;
+        FavouritesListsTable favouritesSpotInfoForPresentIndex = null;
+        FavouritesListsTable favouritesSpotInfoForForwardIndex = null;
         String spotNamePresentIndex = null;
         String spotNameForwardIndex = null;
         int k = favouritesSpotInfoArrayList.size() - 1;

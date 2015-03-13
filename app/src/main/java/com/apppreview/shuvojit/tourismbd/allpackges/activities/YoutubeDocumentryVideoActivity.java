@@ -2,6 +2,7 @@ package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,7 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apppreview.shuvojit.tourismbd.R;
-import com.apppreview.shuvojit.tourismbd.allpackges.infos.DocumentaryVideoInfo;
+import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.DocVideoTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.FontClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -19,16 +21,17 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 
 
 public class YoutubeDocumentryVideoActivity extends ActionBarActivity implements
-        YouTubePlayer.OnInitializedListener, InitializerClient {
+        YouTubePlayer.OnInitializedListener, InitializerClient, FontClient {
 
     private YouTubePlayerFragment youTubePlayerFragment;
     private FragmentManager fragmentManager;
     private TextView txtVideoName;
     private Intent intent;
-    private DocumentaryVideoInfo documentaryVideoInfo;
+    private DocVideoTable documentaryVideoInfo;
     private String API_KEY;
     private String videoID;
     private YouTubePlayer player;
+    private Typeface typeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +48,19 @@ public class YoutubeDocumentryVideoActivity extends ActionBarActivity implements
 
         API_KEY = getResources().getString(
                 R.string.google_play_services_API_KEY);
+        typeface = Typeface.createFromAsset(getAssets(), UBUNTU_FONT_PATH);
         fragmentManager = getFragmentManager();
         txtVideoName = (TextView) findViewById(R.id.doc_video_name);
+        txtVideoName.setTypeface(typeface);
         youTubePlayerFragment = (YouTubePlayerFragment) fragmentManager
                 .findFragmentById(R.id.frag_doc_video);
         intent = getIntent();
-        documentaryVideoInfo = (DocumentaryVideoInfo) intent
+        documentaryVideoInfo = (DocVideoTable) intent
                 .getSerializableExtra("Video_Info");
         if (documentaryVideoInfo != null) {
-            videoID = documentaryVideoInfo.getDocKey();
+            videoID = documentaryVideoInfo.getKeyName();
             setTxtVideoName(documentaryVideoInfo.getDocName());
-            initializeYouttubeFragment();
+            initializeYoutubeFragment();
         } else {
             Toast.makeText(getApplicationContext(), "Null Found",
                     Toast.LENGTH_LONG).show();
@@ -63,7 +68,7 @@ public class YoutubeDocumentryVideoActivity extends ActionBarActivity implements
 
     }
 
-    private void initializeYouttubeFragment() {
+    private void initializeYoutubeFragment() {
         try {
             youTubePlayerFragment.initialize(API_KEY, this);
         }

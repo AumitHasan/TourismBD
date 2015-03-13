@@ -1,12 +1,10 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.activities;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -15,6 +13,8 @@ import android.webkit.WebViewClient;
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class WebViewActivity extends ActionBarActivity implements InitializerClient {
 
@@ -22,9 +22,17 @@ public class WebViewActivity extends ActionBarActivity implements InitializerCli
     private Intent intent;
     private String url;
     private String actionBarName;
-    private ProgressDialog progressDialog;
+    private SweetAlertDialog progressDialog;
     private ActionBar actionBar;
+    private WebViewClient webViewClient = new WebViewClient() {
+        public void onPageFinished(WebView view, String url) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismissWithAnimation();
+            }
+        }
 
+        ;
+    };
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -52,13 +60,14 @@ public class WebViewActivity extends ActionBarActivity implements InitializerCli
         url = intent.getStringExtra("URL");
         actionBar = getSupportActionBar();
         actionBarName = intent.getStringExtra("ACTION_BAR_NAME");
-        progressDialog = new ProgressDialog(WebViewActivity.this);
+        progressDialog = new SweetAlertDialog(WebViewActivity.this,
+                SweetAlertDialog.PROGRESS_TYPE);
 
     }
 
     private void showProgressDialog() {
-        progressDialog.setMessage("Loading ...");
-        progressDialog.setCancelable(false);
+        progressDialog.setTitleText("Loading...");
+        progressDialog.setCancelable(true);
         progressDialog.show();
 
     }
@@ -78,14 +87,6 @@ public class WebViewActivity extends ActionBarActivity implements InitializerCli
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private WebViewClient webViewClient = new WebViewClient() {
-        public void onPageFinished(WebView view, String url) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-        };
-    };
 
 }
 
