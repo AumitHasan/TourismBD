@@ -68,7 +68,7 @@ public class TourismInfoListFragment extends Fragment implements InitializerClie
         if (fragmentView != null) {
             context = getActivity();
             recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recyclerView);
-            if (infoType.equalsIgnoreCase("Documentry Videos")) {
+            if (infoType.equalsIgnoreCase("Documentary Videos")) {
                 docVideoTableDataList = DocVideoTable.getAllDocVideoTableModelDataList();
                 tourismInfoListRecyclerViewAdapter = new
                         TourismInfoListRecyclerViewAdapter(context,

@@ -14,10 +14,8 @@ import android.widget.Toast;
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.listViewAdapters.FavouritesSpotListViewAdapter;
 import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.FavouritesListsTable;
-import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
