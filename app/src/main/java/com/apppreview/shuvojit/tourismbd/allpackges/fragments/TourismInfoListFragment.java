@@ -17,6 +17,7 @@ import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient
 
 import java.util.List;
 
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import jp.wasabeef.recyclerview.animators.OvershootInLeftAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
@@ -81,7 +82,7 @@ public class TourismInfoListFragment extends Fragment implements InitializerClie
                 tourismInfoListRecyclerViewAdapter = new
                         TourismInfoListRecyclerViewAdapter(context,
                         spotInfoList, "Tourist Spot Infos");
-                recyclerView.setItemAnimator(new OvershootInLeftAnimator());
+                recyclerView.setItemAnimator(new LandingAnimator());
             }
             recyclerView.setAdapter(new AlphaInAnimationAdapter(
                     tourismInfoListRecyclerViewAdapter));
