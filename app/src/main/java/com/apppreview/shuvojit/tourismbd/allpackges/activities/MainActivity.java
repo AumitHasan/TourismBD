@@ -27,6 +27,7 @@ import com.apppreview.shuvojit.tourismbd.allpackges.fragments.GoogleMapForAllSpo
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.HomeFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.fragments.TourismInfoListFragment;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
+import com.apppreview.shuvojit.tourismbd.allpackges.popUpWindows.progressDialogs.UserChoicePromptPopUpWindow;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,25 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
     private ActionBarDrawerToggle navDrawerListener;
     private NavDrawerListViewAdapter navDrawerListViewAdapter;
     private String[] navDrawerlistItem;
+    OnItemClickListener navDrawerItemListener = new OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+
+            selectPostion(position);
+        }
+
+        private void selectPostion(int position) {
+
+            navDrawerListView.setItemChecked(position, true);
+            setTitle(navDrawerlistItem[position]);
+            Log.e(getClass().getName(), navDrawerlistItem[position]
+                    + " is selected");
+            setFragment(position);
+
+        }
+    };
     private FragmentManager fragmentManager;
     private HomeFragment homeFragment;
     private ActionBar actionBar;
@@ -92,14 +112,14 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
 
     private void setFragment(int position) {
         String navDrawerCategory = navDrawerlistItem[position];
-       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragment = null;
         switch (navDrawerCategory) {
             case "Maps":
                 ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoArrayList =
                         (ArrayList<LatLongInfoOfAllSpotsTable>)
-                        LatLongInfoOfAllSpotsTable.
-                        getAllLatLongInfoOfAllSpotsTableData();
+                                LatLongInfoOfAllSpotsTable.
+                                        getAllLatLongInfoOfAllSpotsTableData();
 
                 if (latLongInfoArrayList != null && latLongInfoArrayList.size() > 0) {
                     Log.e(getClass().getName(), "Not Null");
@@ -131,8 +151,6 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
 
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -162,28 +180,12 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
         super.onConfigurationChanged(newConfig);
         navDrawerListener.onConfigurationChanged(newConfig);
     }
-    OnItemClickListener navDrawerItemListener = new OnItemClickListener() {
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-
-            selectPostion(position);
-        }
-
-        private void selectPostion(int position) {
-
-            navDrawerListView.setItemChecked(position, true);
-            setTitle(navDrawerlistItem[position]);
-            Log.e(getClass().getName(), navDrawerlistItem[position]
-                    + " is selected");
-            setFragment(position);
-
-        }
-    };
-
-
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        UserChoicePromptPopUpWindow.closeApp(this);
+    }
 }
 
 

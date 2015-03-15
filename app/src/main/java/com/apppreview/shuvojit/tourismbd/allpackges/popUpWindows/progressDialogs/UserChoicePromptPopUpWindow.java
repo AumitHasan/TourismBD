@@ -1,6 +1,7 @@
 package com.apppreview.shuvojit.tourismbd.allpackges.popUpWindows.progressDialogs;
 
 import android.content.Context;
+import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import com.apppreview.shuvojit.tourismbd.R;
@@ -99,6 +100,36 @@ public final class UserChoicePromptPopUpWindow {
         favouritesListsTable.save();
         TouristSpotInfoActivity.isSpotNameExist = true;
         favouritesMenu.setIcon(R.drawable.ic_action_favorite);
+    }
+
+    public static void closeApp(final ActionBarActivity activity)
+    {
+        if(activity != null)
+        {
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(activity,
+                    SweetAlertDialog.WARNING_TYPE);
+            sweetAlertDialog
+                    .setTitleText("Exit?")
+                    .setConfirmText("Yes")
+                    .setCancelText("No")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            activity.finish();
+                            sweetAlertDialog.dismissWithAnimation();
+
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+            sweetAlertDialog.setCancelable(true);
+            sweetAlertDialog.show();
+
+        }
     }
 
 
