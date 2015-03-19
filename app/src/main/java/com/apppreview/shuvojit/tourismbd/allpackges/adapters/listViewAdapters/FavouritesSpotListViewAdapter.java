@@ -152,7 +152,7 @@ public class FavouritesSpotListViewAdapter extends BaseAdapter implements Initia
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(context,
                 SweetAlertDialog.WARNING_TYPE);
         sweetAlertDialog.setTitleText("Delete")
-                .setContentText(spotName + " From favourites?")
+                .setContentText(spotName + " From favourites")
                 .setConfirmText("Yes")
                 .setCancelText("No")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
