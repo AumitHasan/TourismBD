@@ -21,6 +21,7 @@
         android:layout_gravity="start"
         android:background="@color/white"
         android:choiceMode="singleChoice"
+        android:listSelector="@color/colorAccent"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" />
 

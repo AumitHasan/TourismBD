@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
         private void selectPostion(int position) {
 
             navDrawerListView.setItemChecked(position, true);
+            /*navDrawerListView.setSelector(R.drawable.list_view_item_background);*/
             setTitle(navDrawerlistItem[position]);
             Log.e(getClass().getName(), navDrawerlistItem[position]
                     + " is selected");
