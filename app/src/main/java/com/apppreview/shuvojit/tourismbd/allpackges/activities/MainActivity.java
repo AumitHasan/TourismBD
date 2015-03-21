@@ -74,6 +74,7 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
         homeFragment = new HomeFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_fragment, homeFragment).commit();
+        navDrawerListView.setItemChecked(0, true);
     }
 
     @Override
@@ -126,8 +127,9 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
                     Log.e(getClass().getName(), "Not Null");
                     double cameraLatVal = 23.7000;
                     double cameraLngVal = 90.3500;
+                    float zoomLevel = 6.1f;
                     fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
-                            cameraLatVal, cameraLngVal);
+                            cameraLatVal, cameraLngVal, zoomLevel);
                 }
 
                 break;

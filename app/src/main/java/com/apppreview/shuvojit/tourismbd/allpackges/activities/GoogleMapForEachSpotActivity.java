@@ -37,14 +37,16 @@ public class GoogleMapForEachSpotActivity extends ActionBarActivity implements
     public void initialize() {
         actionBar = getSupportActionBar();
         Intent intent = getIntent();
-        LatLongInfoOfAllSpotsTable latLongInfo= (LatLongInfoOfAllSpotsTable) intent
+        LatLongInfoOfAllSpotsTable latLongInfo = (LatLongInfoOfAllSpotsTable) intent
                 .getSerializableExtra("SpotLatLongInfo");
         actionBar.setTitle(latLongInfo.getSpotName());
         ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoArrayList =
                 new ArrayList<LatLongInfoOfAllSpotsTable>();
         latLongInfoArrayList.add(latLongInfo);
+        float zoomLevel = 12.3f;
         Fragment fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
-                latLongInfo.getSpotlatitudefield(), latLongInfo.getSpotLongtitudeField());
+                latLongInfo.getSpotlatitudefield(), latLongInfo.getSpotLongtitudeField(),
+                zoomLevel);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().
                 beginTransaction();
         fragmentTransaction.replace(R.id.content_fragment, fragment).commit();

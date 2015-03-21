@@ -61,6 +61,7 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
     private FragmentManager fragmentManager;
     private double cameraLatVal;
     private double cameraLngVal;
+    private float zoomLevel;
 
     public GoogleMapForAllSpotsFragment() {
 
@@ -69,7 +70,8 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
     public static GoogleMapForAllSpotsFragment getNewInstance(
             ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoList,
             double cameraMoveLatVal,
-            double cameraMoveLngVal
+            double cameraMoveLngVal,
+            float zoomLevel
     ) {
         GoogleMapForAllSpotsFragment googleMapForAllSpotsFragment = new
                 GoogleMapForAllSpotsFragment();
@@ -77,6 +79,7 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
         bundle.putSerializable("Lat long info list", latLongInfoList);
         bundle.putDouble("Camera Move Lat Val", cameraMoveLatVal);
         bundle.putDouble("Camera Move Lng Val", cameraMoveLngVal);
+        bundle.putFloat("Zoom Level", zoomLevel);
         googleMapForAllSpotsFragment.setArguments(bundle);
         return googleMapForAllSpotsFragment;
     }
@@ -90,6 +93,7 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
                     getSerializable("Lat long info list");
             cameraLatVal = bundle.getDouble("Camera Move Lat Val");
             cameraLngVal = bundle.getDouble("Camera Move Lng Val");
+            zoomLevel = bundle.getFloat("Zoom Level");
 
         }
     }
@@ -115,18 +119,19 @@ public class GoogleMapForAllSpotsFragment extends Fragment implements
             fragmentManager = getActivity().getFragmentManager();
             mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.googleMap);
             googleMap = mapFragment.getMap();
-            setGoogleMapCameraMove(cameraLatVal, cameraLngVal);
+            setGoogleMapCameraMove(cameraLatVal, cameraLngVal, zoomLevel);
             setAllMarkersOnMap();
             UiSettings googleMapUiSettings = googleMap.getUiSettings();
             googleMapUiSettings.setMapToolbarEnabled(false);
         }
     }
 
-    private void setGoogleMapCameraMove(double cameraLatVal, double cameraLngVal) {
+    private void setGoogleMapCameraMove(double cameraLatVal, double cameraLngVal,
+                                        float zoomLevel) {
         if (googleMap != null) {
             LatLng spotLatLng = new LatLng(cameraLatVal, cameraLngVal);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spotLatLng,
-                    6.0f));
+                    zoomLevel));
         }
     }
 
