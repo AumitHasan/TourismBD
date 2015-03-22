@@ -16,6 +16,13 @@ import android.widget.Toast;
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
 import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.DurationDistance;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.GoogleMapDirectionJson;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Legs;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Location;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Polyline;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Routes;
+import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Steps;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DirectionApiJsonClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
@@ -31,9 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -379,19 +384,12 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
             super.onPostExecute(result);
             if (jsonData != null && result == true) {
                 Log.e(getClass().getName(), "Data fetching Successfully");
-                try {
-                    JSONObject wholeJsonObject = new JSONObject(jsonData);
-                    JSONArray wholeRoutesArray = wholeJsonObject.getJSONArray(ROUTES_FIELD);
-                    JSONObject routesJsonObject = wholeRoutesArray.getJSONObject(0);
-                    JSONArray wholeLegJsonArray = routesJsonObject.getJSONArray(LEGS_FIELD);
-                    JSONObject legJsonObject = wholeLegJsonArray.getJSONObject(0);
-                    copyRight = getCopyRight(routesJsonObject);
-                    getAllDirectionRequiredVal(legJsonObject);
 
+                Gson googleMapDirectionGson = new Gson();
+                GoogleMapDirectionJson googleMapDirectionJson = googleMapDirectionGson.
+                        fromJson(jsonData, GoogleMapDirectionJson.class);
+                getAllDirectionRequiredVal(googleMapDirectionJson);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             } else {
                 Log.e(getClass().getName(), "Data fetching failed");
             }
@@ -402,126 +400,107 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
         }
 
-        private void getAllDirectionRequiredVal(JSONObject legJsonObject) {
-            if (legJsonObject != null) {
-                Log.e(getClass().getName(), "Leg json object has been found");
-                distanceText = getDistanceText(legJsonObject);
-                durationText = getDurationText(legJsonObject);
-                startAddress = getStartAddress(legJsonObject);
-                endAddress = getEndAddress(legJsonObject);
-                directionPointslatLng = getPolyLinePoints(legJsonObject);
-                if (distanceText != null && durationText != null && startAddress != null &&
-                        endAddress != null && directionPointslatLng != null &&
-                        directionPointslatLng.size() > 0 && copyRight != null) {
-                    Log.e(getClass().getName(), "All steps has been found.");
-                    PolylineOptions polylineOptions = new PolylineOptions().width(5).visible(true)
-                            .color(Color.MAGENTA);
-                    for (int i = 0; i < directionPointslatLng.size(); i++) {
-                        polylineOptions.add(directionPointslatLng.get(i));
-                    }
-                    googleMap.addPolyline(polylineOptions);
+        private void getAllDirectionRequiredVal(GoogleMapDirectionJson googleMapDirectionJson) {
+            ArrayList<Routes> routesArrayList = googleMapDirectionJson.getRoutesArrayList();
+            if (routesArrayList != null && routesArrayList.size() > 0) {
+                Routes routes = routesArrayList.get(0);
+                ArrayList<Legs> legsArrayList = routes.getLegsArrayList();
+                if (legsArrayList != null && legsArrayList.size() > 0) {
+                    Legs legs = legsArrayList.get(0);
+                    startAddress = getStartAddress(legs);
+                    endAddress = getEndAddress(legs);
+                    durationText = getDurationText(legs);
+                    distanceText = getDistanceText(legs);
+
+                    directionPointslatLng = getPolyLinePoints(legs);
                 }
+                copyRight = getCopyRight(routes);
+
             }
+            if (distanceText != null && durationText != null && startAddress != null &&
+                    endAddress != null && directionPointslatLng != null &&
+                    directionPointslatLng.size() > 0 && copyRight != null) {
+                Log.e(getClass().getName(), "All steps has been found.");
+                PolylineOptions polylineOptions = new PolylineOptions().width(5).visible(true)
+                        .color(Color.MAGENTA);
+                for (int i = 0; i < directionPointslatLng.size(); i++) {
+                    polylineOptions.add(directionPointslatLng.get(i));
+                }
+                googleMap.addPolyline(polylineOptions);
+            }
+
         }
 
-        private String getCopyRight(JSONObject legJsonObject) {
+
+        private String getCopyRight(Routes routes) {
             String copyRight = null;
-            try {
-                copyRight = legJsonObject.getString(COPYRIGHT_FIELD);
-                Log.e(getClass().getName(), "CopyRight: " + copyRight);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            copyRight = routes.getCopyrights();
             return copyRight;
         }
 
-        private String getEndAddress(JSONObject legJsonObject) {
+        private String getEndAddress(Legs legs) {
             String endAddress = null;
-            try {
-                endAddress = legJsonObject.getString(END_ADDRESS_FIELD);
-                Log.e(getClass().getName(), "End Address: " + endAddress);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            endAddress = legs.getEndAddress();
             return endAddress;
         }
 
-        private String getStartAddress(JSONObject legJsonObject) {
+        private String getStartAddress(Legs legs) {
             String startAddress = null;
-            try {
-                startAddress = legJsonObject.getString(START_ADDRESS_FIELD);
-                Log.e(getClass().getName(), "Start Address: " + startAddress);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            startAddress = legs.getStartAddress();
             return startAddress;
 
         }
 
 
-        private String getDurationText(JSONObject legJsonObject) {
+        private String getDurationText(Legs legs) {
             String durationText = null;
-            try {
-                JSONObject durationJsonObject = legJsonObject.getJSONObject(DURATION_FIELD);
-                durationText = durationJsonObject.getString(TEXT_FIELD);
-                Log.e(getClass().getName(), "Duration : " + durationText);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            DurationDistance durationDistance = legs.getDuration();
+            durationText = durationDistance.getText();
             return durationText;
         }
 
-        private String getDistanceText(JSONObject legJsonObject) {
+        private String getDistanceText(Legs legs) {
             String distanceText = null;
-            try {
-                JSONObject distanceObject = legJsonObject.getJSONObject(DISTANCE_FIELD);
-                distanceText = distanceObject.getString(TEXT_FIELD);
-                Log.e(getClass().getName(), "Distance: " + distanceText);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            DurationDistance distance = legs.getDistance();
+            distanceText = distance.getText();
             return distanceText;
         }
 
-        private ArrayList<LatLng> getPolyLinePoints(JSONObject legJsonObject) {
+        private ArrayList<LatLng> getPolyLinePoints(Legs legs) {
             ArrayList<LatLng> polyLines = null;
-            JSONObject startLocation = null;
-            JSONObject endLocation = null;
-            JSONObject polyLine = null;
-            JSONObject jsonObject = null;
+            Location startLocation = null;
+            Location endLocation = null;
+            Polyline polyLine = null;
+            Steps steps = null;
             ArrayList<LatLng> decodePolyLineLatLngs;
             double lat = 0;
             double lng = 0;
-            try {
-                JSONArray stepsJsonArray = legJsonObject.getJSONArray(STEPS_FIELD);
-                if (stepsJsonArray != null) {
-                    Log.e(getClass().getName(), "All steps has been found.");
-                    polyLines = new ArrayList<LatLng>();
-                    for (int i = 0; i < stepsJsonArray.length(); i++) {
-                        jsonObject = stepsJsonArray.getJSONObject(i);
-                        startLocation = jsonObject.getJSONObject(START_LOCATION_FIELD);
-                        lat = startLocation.getDouble(LATITUDE_FIELD);
-                        lng = startLocation.getDouble(LONGTITUDE_FIELD);
-                        polyLines.add(new LatLng(lat, lng));
-                        polyLine = jsonObject.getJSONObject(POLYLINE_FIELD);
-                        decodePolyLineLatLngs = decodePoly(polyLine.getString(POINTS_FIELD));
-                        if (decodePolyLineLatLngs != null && decodePolyLineLatLngs.size() > 0) {
-                            for (int j = 0; j < decodePolyLineLatLngs.size(); j++) {
-                                LatLng latLng = decodePolyLineLatLngs.get(j);
-                                polyLines.add(latLng);
-                            }
+
+            ArrayList<Steps> stepsArrayList = legs.getStepsArrayList();
+            if (stepsArrayList != null) {
+                Log.e(getClass().getName(), "All steps has been found.");
+                polyLines = new ArrayList<LatLng>();
+                for (int i = 0; i < stepsArrayList.size(); i++) {
+                    steps = stepsArrayList.get(i);
+                    startLocation = steps.getStartLocation();
+                    lat = startLocation.getLat();
+                    lng = startLocation.getLng();
+                    polyLines.add(new LatLng(lat, lng));
+                    polyLine = steps.getPolyline();
+                    decodePolyLineLatLngs = decodePoly(polyLine.getPoints());
+                    if (decodePolyLineLatLngs != null && decodePolyLineLatLngs.size() > 0) {
+                        for (int j = 0; j < decodePolyLineLatLngs.size(); j++) {
+                            LatLng latLng = decodePolyLineLatLngs.get(j);
+                            polyLines.add(latLng);
                         }
-                        endLocation = jsonObject.getJSONObject(END_LOCATION_FIELD);
-                        lat = endLocation.getDouble(LATITUDE_FIELD);
-                        lng = endLocation.getDouble(LONGTITUDE_FIELD);
-                        polyLines.add(new LatLng(lat, lng));
                     }
+                    endLocation = steps.getEndLocation();
+                    lat = endLocation.getLat();
+                    lng = endLocation.getLng();
+                    polyLines.add(new LatLng(lat, lng));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
             return polyLines;
         }
 
