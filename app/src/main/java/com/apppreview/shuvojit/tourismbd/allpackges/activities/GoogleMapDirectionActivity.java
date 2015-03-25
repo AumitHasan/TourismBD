@@ -245,8 +245,7 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
 
 
         } else {
-            Toast.makeText(getApplicationContext(), "Sorry we could not connect to web services " +
-                            "right now. Please check your internet connection.",
+            Toast.makeText(getApplicationContext(), "Sorry no direction is found",
                     Toast.LENGTH_LONG).show();
 
         }
