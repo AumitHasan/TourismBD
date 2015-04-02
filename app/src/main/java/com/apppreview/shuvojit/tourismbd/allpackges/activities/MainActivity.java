@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements InitializerClient {
 
+    private static int navListViewPosition = 0;
     private DrawerLayout drawerLayout;
     private ListView navDrawerListView;
     private ActionBarDrawerToggle navDrawerListener;
@@ -68,13 +69,15 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_layout);
-        initialize();
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        homeFragment = new HomeFragment();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_fragment, homeFragment).commit();
-        navDrawerListView.setItemChecked(0, true);
+        if (savedInstanceState == null) {
+            initialize();
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            homeFragment = new HomeFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_fragment, homeFragment).commit();
+            navDrawerListView.setItemChecked(0, true);
+        }
     }
 
     @Override
@@ -118,32 +121,47 @@ public class MainActivity extends ActionBarActivity implements InitializerClient
         fragment = null;
         switch (navDrawerCategory) {
             case "Maps":
-                ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoArrayList =
-                        (ArrayList<LatLongInfoOfAllSpotsTable>)
-                                LatLongInfoOfAllSpotsTable.
-                                        getAllLatLongInfoOfAllSpotsTableData();
+                if (position != navListViewPosition) {
+                    ArrayList<LatLongInfoOfAllSpotsTable> latLongInfoArrayList =
+                            (ArrayList<LatLongInfoOfAllSpotsTable>)
+                                    LatLongInfoOfAllSpotsTable.
+                                            getAllLatLongInfoOfAllSpotsTableData();
 
-                if (latLongInfoArrayList != null && latLongInfoArrayList.size() > 0) {
-                    Log.e(getClass().getName(), "Not Null");
-                    double cameraLatVal = 23.7000;
-                    double cameraLngVal = 90.3500;
-                    float zoomLevel = 6.1f;
-                    fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
-                            cameraLatVal, cameraLngVal, zoomLevel);
+                    if (latLongInfoArrayList != null && latLongInfoArrayList.size() > 0) {
+                        Log.e(getClass().getName(), "Not Null");
+                        double cameraLatVal = 23.7000;
+                        double cameraLngVal = 90.3500;
+                        float zoomLevel = 6.1f;
+                        fragment = GoogleMapForAllSpotsFragment.getNewInstance(latLongInfoArrayList,
+                                cameraLatVal, cameraLngVal, zoomLevel);
+                        navListViewPosition = position;
+                    }
                 }
 
                 break;
             case "Home":
-                fragment = HomeFragment.getNewInstance();
+                if (position != navListViewPosition) {
+                    fragment = HomeFragment.getNewInstance();
+                    navListViewPosition = position;
+                }
                 break;
             case "Favourites":
-                fragment = FavouritesFragment.getNewInstance();
+                if (position != navListViewPosition) {
+                    fragment = FavouritesFragment.getNewInstance();
+                    navListViewPosition = position;
+                }
                 break;
             case "About":
-                fragment = AboutOurAppFragment.getInstance();
+                if (position != navListViewPosition) {
+                    fragment = AboutOurAppFragment.getInstance();
+                    navListViewPosition = position;
+                }
                 break;
             default:
-                fragment = TourismInfoListFragment.getNewInstance(navDrawerCategory);
+                if (position != navListViewPosition) {
+                    fragment = TourismInfoListFragment.getNewInstance(navDrawerCategory);
+                    navListViewPosition = position;
+                }
                 break;
         }
         if (fragment != null && fragmentTransaction != null) {
