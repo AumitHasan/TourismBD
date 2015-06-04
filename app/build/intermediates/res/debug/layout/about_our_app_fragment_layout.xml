@@ -27,14 +27,12 @@
             android:id="@+id/txt_tourism_discrip_in_BD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:padding="10dp"
             android:text="@string/txt_tourism_discrip_in_BD"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
-            android:elevation="5dp"
             />
 
 
@@ -42,7 +40,6 @@
             android:id="@+id/txt_app_def_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:gravity="start"
             android:padding="10dp"
@@ -50,14 +47,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
-            android:elevation="5dp"
             />
 
         <TextView
             android:id="@+id/txt_app_def_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:gravity="start"
             android:padding="10dp"
@@ -65,14 +60,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
-            android:elevation="5dp"
             />
 
         <TextView
             android:id="@+id/txt_app_def_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:gravity="start"
             android:padding="10dp"
@@ -80,14 +73,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
-            android:elevation="5dp"
             />
 
         <TextView
             android:id="@+id/txt_app_def_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:background="@color/white"
             android:gravity="start"
             android:padding="10dp"
@@ -95,7 +86,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
-            android:elevation="5dp"
             />
 
         <TextView
@@ -109,7 +99,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorAccent"
             android:textSize="20sp"
-            android:elevation="5dp"
             />
     </LinearLayout>
 

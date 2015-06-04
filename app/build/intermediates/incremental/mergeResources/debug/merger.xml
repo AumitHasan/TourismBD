@@ -2612,16 +2612,16 @@
         <item>Favourites</item>
         <item>Maps</item>
         <item>Documentary Videos</item>
-        <item>Heritage Site</item>
-        <item>Beaches</item>
-        <item>Hill stations</item>
-        <item>Island</item>
-        <item>Wildlife</item>
-        <item>Waterfall</item>
         <item>Archaeological Sites</item>
         <item>Architecture</item>
-        <item>Religious</item>
+        <item>Beaches</item>
+        <item>Heritage Site</item>
+        <item>Hill stations</item>
+        <item>Island</item>
         <item>National Monuments</item>
+        <item>Religious</item>
+        <item>Waterfall</item>
+        <item>Wildlife</item>
         <item>About</item>
     </string-array><string-array name="sonadia_island">
         <item>@drawable/image_sonadia_island</item>
