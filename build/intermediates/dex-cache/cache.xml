@@ -23,6 +23,48 @@
         <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/YouTubeAndroidPlayerApi-e095bb60904e8d841ac913c98830f7f3038ad185.jar" />
     </item>
     <item
+        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.pnikosis/materialish-progress/1.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="57487745ce450899f9f250d5ae5c092a682cd041">
+        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-9a5b447d039e37be4498cbd3973b74bdbc0bf70b.jar" />
+    </item>
+    <item
+        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-09ce5a2ac465390f56d8c74d1ea649b7280c7e69.jar" />
+    </item>
+    <item
+        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-4b975e8a0c9cc996d811da31eff3f8b0de5abbcf.jar" />
+    </item>
+    <item
+        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-e13491ef0bf120eaf9d08dc79688a142da2bc73c.jar" />
+    </item>
+    <item
+        jar="/home/shuvojit/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568">
+        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/gson-2.2.4-22c48ad9f8c35d918bdaaa129e18b541f2690f55.jar" />
+    </item>
+    <item
+        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-c7ee905e03e9ee1ad53dbd49b5cca8bf96c205cd.jar" />
+    </item>
+    <item
         jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -35,13 +77,6 @@
         revision="21.1.2"
         sha1="4b8945fc23a7461c6fdde15753456d64b0a9358b">
         <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-ab5d9949fb791048af1e36e340033dc6985cb26a.jar" />
-    </item>
-    <item
-        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.pnikosis/materialish-progress/1.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="57487745ce450899f9f250d5ae5c092a682cd041">
-        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-9a5b447d039e37be4498cbd3973b74bdbc0bf70b.jar" />
     </item>
     <item
         jar="/home/shuvojit/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
@@ -65,13 +100,6 @@
         <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-5a234b6d29ba4cdafbadbaf05e3f1e9930d63016.jar" />
     </item>
     <item
-        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
-        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-09ce5a2ac465390f56d8c74d1ea649b7280c7e69.jar" />
-    </item>
-    <item
         jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/cn.pedant.sweetalert/library/1.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -79,39 +107,11 @@
         <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-5851dbebab73dedc779c199f0124e75bde6df5ec.jar" />
     </item>
     <item
-        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-4b975e8a0c9cc996d811da31eff3f8b0de5abbcf.jar" />
-    </item>
-    <item
-        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
-        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-e13491ef0bf120eaf9d08dc79688a142da2bc73c.jar" />
-    </item>
-    <item
         jar="/home/shuvojit/android-sdks/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
         <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-499868a1f899200f5544cfbbe9afa4224449e6aa.jar" />
-    </item>
-    <item
-        jar="/home/shuvojit/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a60a5e993c98c864010053cb901b7eab25306568">
-        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/gson-2.2.4-22c48ad9f8c35d918bdaaa129e18b541f2690f55.jar" />
-    </item>
-    <item
-        jar="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/pre-dexed/debug/classes-c7ee905e03e9ee1ad53dbd49b5cca8bf96c205cd.jar" />
     </item>
 
 </items>

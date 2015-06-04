@@ -297,7 +297,7 @@
         <item>Home</item>
         <item>Favourites</item>
         <item>Maps</item>
-        <item>Documentry Videos</item>
+        <item>Documentary Videos</item>
         <item>Heritage Site</item>
         <item>Beaches</item>
         <item>Hill stations</item>
@@ -913,6 +913,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentOverlay">@drawable/bottom_shadow</item>
 
     </style>
     <!-- From: file:/home/shuvojit/AndroidStudioProjects/TourismBD/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->

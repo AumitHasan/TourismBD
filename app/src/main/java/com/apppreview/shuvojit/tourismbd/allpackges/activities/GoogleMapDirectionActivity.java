@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.apppreview.shuvojit.tourismbd.R;
 import com.apppreview.shuvojit.tourismbd.allpackges.adapters.googleMapInfoWindowAdapters.InfoWindowAdapterForEachSpot;
 import com.apppreview.shuvojit.tourismbd.allpackges.databaseTablesModel.LatLongInfoOfAllSpotsTable;
+import com.apppreview.shuvojit.tourismbd.allpackges.dialogs.UserNotifiedDialog;
 import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.DurationDistance;
 import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.GoogleMapDirectionJson;
 import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Legs;
@@ -23,6 +24,7 @@ import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiG
 import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Polyline;
 import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Routes;
 import com.apppreview.shuvojit.tourismbd.allpackges.gsons.googleMapDirectionApiGsons.Steps;
+import com.apppreview.shuvojit.tourismbd.allpackges.infos.ConnectivityInfo;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.DirectionApiJsonClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.GoogleMapClient;
 import com.apppreview.shuvojit.tourismbd.allpackges.interfaces.InitializerClient;
@@ -75,32 +77,16 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         }
     };
 
-    /*private void getOverFlowMenu() {
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class
-                    .getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.google_map_layout);
         initialize();
-        //getOverFlowMenu();
         googleMap.setInfoWindowAdapter(new InfoWindowAdapterForEachSpot(this));
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
-        //googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);
     }
 
     @Override
@@ -126,7 +112,7 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         setGoogleMapCameraMove();
         setTitle(latlongInfo.getSpotName());
         UiSettings uiSettings = googleMap.getUiSettings();
-        uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setMapToolbarEnabled(true);
 
     }
 
@@ -137,18 +123,44 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
         userLocation.setUpUserLocation();
         userLatitudeVal = userLocation.getUserLatitude();
         userLongitudeVal = userLocation.getUserLongtitude();
-        if (userMarker == null) {
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(new LatLng(userLatitudeVal, userLongitudeVal))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user))
-                    .title("You are here");
-            userMarker = googleMap.addMarker(markerOptions);
+        if (userLocation.isLocationServiceIsOn()) {
+            if (userMarker == null) {
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(new LatLng(userLatitudeVal, userLongitudeVal))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user))
+                        .title("You are here");
+                userMarker = googleMap.addMarker(markerOptions);
+            } else {
+                changeUserPosition();
+            }
+
+            if (!ConnectivityInfo
+                    .isInternetConnectionOn(GoogleMapDirectionActivity.this)) {
+                showUserNotifiedDialogForInternet();
+            } else {
+                new GoogleMapDirectionApiAsyncTask().execute();
+            }
         } else {
-            changeUserPosition();
+            showUserNotifiedDialogForLocation();
         }
-        new GoogleMapDirectionApiAsyncTask().execute();
         setTimer();
     }
+
+
+    private void showUserNotifiedDialogForInternet() {
+        UserNotifiedDialog userNotifiedDialog = new UserNotifiedDialog
+                (GoogleMapDirectionActivity.this, "Internet Connection Alert",
+                        "Do you want to turn on your internet connection?");
+        userNotifiedDialog.showDialog();
+    }
+
+    private void showUserNotifiedDialogForLocation() {
+        UserNotifiedDialog userNotifiedDialog = new UserNotifiedDialog
+                (GoogleMapDirectionActivity.this, "Location Service Alert",
+                        "Do you want to turn on your location service?");
+        userNotifiedDialog.showDialog();
+    }
+
 
     private void changeUserPosition() {
         userLatitudeVal = userLocation.getUserLatitude();
@@ -217,8 +229,17 @@ public class GoogleMapDirectionActivity extends ActionBarActivity implements
     }
 
     private void reloadDirection() {
-        changeUserPosition();
-        new GoogleMapDirectionApiAsyncTask().execute();
+        if (userLocation.isLocationServiceIsOn()) {
+            changeUserPosition();
+            if (!ConnectivityInfo
+                    .isInternetConnectionOn(GoogleMapDirectionActivity.this)) {
+                showUserNotifiedDialogForInternet();
+            } else {
+                new GoogleMapDirectionApiAsyncTask().execute();
+            }
+        } else {
+            showUserNotifiedDialogForLocation();
+        }
     }
 
     private void stopTimer() {

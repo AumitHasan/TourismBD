@@ -106,6 +106,18 @@ public class UserLocation implements InitializerClient {
         return oldLocation;
     }
 
+    public boolean isLocationServiceIsOn() {
+        boolean res = false;
+        if (isServiceEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.e(getClass().getName(), "GPS is on");
+            res = true;
+        } else if (isServiceEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Log.e(getClass().getName(), "Network is on");
+            res = true;
+        }
+        return res;
+    }
+
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
