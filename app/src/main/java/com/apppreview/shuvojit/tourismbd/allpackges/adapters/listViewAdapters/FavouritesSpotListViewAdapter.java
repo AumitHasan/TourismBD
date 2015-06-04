@@ -37,6 +37,7 @@ public class FavouritesSpotListViewAdapter extends BaseAdapter implements Initia
     private Button btnDiscardTouristSpot;
     private TextView txtSpotName;
     private ImageView imgSpotIcon;
+    private TextView txtSpotCategory;
     private Context context;
     private View adapterView;
     private String[] allSpotsName;
@@ -91,6 +92,7 @@ public class FavouritesSpotListViewAdapter extends BaseAdapter implements Initia
         initialize();
         FavouritesListsTable favouritesSpotInfo = favouritesSpotInfoArrayList.get(position);
         txtSpotName.setText(favouritesSpotInfo.getSpotName());
+        txtSpotCategory.setText(favouritesSpotInfo.getSpotType());
         txtSpotName.setTypeface(typeface);
         imgSpotIcon.setImageResource(getImageResourceID(favouritesSpotInfo.getSpotName()));
         if (btnSeeTouristSpot != null && btnDiscardTouristSpot != null) {
@@ -103,6 +105,7 @@ public class FavouritesSpotListViewAdapter extends BaseAdapter implements Initia
     public void initialize() {
         if (adapterView != null) {
             txtSpotName = (TextView) adapterView.findViewById(R.id.txt_tourist_spot_name);
+            txtSpotCategory = (TextView) adapterView.findViewById(R.id.txtCategory);
             imgSpotIcon = (ImageView) adapterView.findViewById(R.id.ic_tourist_spot);
             btnDiscardTouristSpot = (Button) adapterView.
                     findViewById(R.id.btn_discard_tourist_spot);
